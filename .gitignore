@@ -1,0 +1,14 @@
+# Nix build artifacts
+result
+result-*
+
+# Editor artifacts
+*.swp
+*.swo
+*~
+.*.un~
+
+# Secrets (never commit)
+secrets/
+*.age
+*.gpg

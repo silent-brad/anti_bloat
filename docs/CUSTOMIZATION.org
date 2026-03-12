@@ -1,0 +1,184 @@
+#+TITLE: Customization Guide
+#+AUTHOR: [[https://github.com/silent-brad][Brad White]]
+#+DATE: 2026-03-12
+#+STARTUP: overview
+
+* Keybindings
+
+Hyprland keybindings are in =home/desktop/hyprland/hyprland.lua=.
+
+** Adding a Keybinding
+
+#+begin_src lua
+bind("SUPER", "E", "exec", "emacs")
+#+end_src
+
+** Modifier Keys
+
+| Modifier | Key |
+|----------+-----|
+| SUPER | Windows/Super key |
+| SHIFT | Shift |
+| CTRL | Control |
+| ALT | Alt |
+
+Combine with space: =SUPER SHIFT=, =CTRL ALT=
+
+* Packages
+
+** System Packages
+
+Edit =hosts/common.nix= or host-specific =default.nix=:
+
+#+begin_src nix
+environment.systemPackages = with pkgs; [
+  new-package
+];
+#+end_src
+
+** User Packages
+
+Edit =home/default.nix=:
+
+#+begin_src nix
+home.packages = with pkgs; [
+  new-package
+];
+#+end_src
+
+** Finding Packages
+
+#+begin_src bash
+# Search nixpkgs
+nix search nixpkgs <package>
+
+# Or use web search
+# https://search.nixos.org/packages
+#+end_src
+
+* Shell
+
+** Nushell Aliases
+
+Edit =home/shell/nushell/default.nix=:
+
+#+begin_src nix
+programs.nushell.shellAliases = {
+  myalias = "some command";
+};
+#+end_src
+
+** Starship Prompt
+
+Edit =home/shell/starship.nix= settings.
+
+Documentation: https://starship.rs/config/
+
+* Neovim
+
+** Adding Plugins
+
+Edit =home/editors/neovim/lua/plugins/init.lua=:
+
+#+begin_src lua
+{
+  "author/plugin-name",
+  config = function()
+    require("plugin-name").setup({})
+  end,
+}
+#+end_src
+
+** Keymaps
+
+Add to =home/editors/neovim/lua/init.lua=:
+
+#+begin_src lua
+vim.keymap.set("n", "<leader>f", function()
+  require("telescope.builtin").find_files()
+end)
+#+end_src
+
+* Theming
+
+** Color Scheme
+
+Current theme: Rose Pine (across Ghostty, Neovim, Waybar)
+
+To change:
+
+1. Ghostty: =home/terminal/ghostty.nix= → =theme==
+2. Neovim: =home/editors/neovim/lua/plugins/init.lua= → colorscheme plugin
+3. Waybar: =home/desktop/waybar/style.css= → colors
+
+** Fonts
+
+System fonts in host config:
+
+#+begin_src nix
+fonts.packages = with pkgs; [
+  nerd-fonts.fira-code
+  nerd-fonts.jetbrains-mono
+];
+#+end_src
+
+* Waybar
+
+** Adding a Module
+
+Edit =home/desktop/waybar/default.nix=:
+
+1. Add module name to =modules-left=, =modules-center=, or =modules-right=
+2. Configure the module in settings
+
+Example custom module:
+
+#+begin_src nix
+"custom/weather" = {
+  exec = "curl -s 'wttr.in?format=1'";
+  interval = 3600;
+};
+#+end_src
+
+* Wallpapers
+
+Place images in =~/Pictures/Wallpapers/=.
+
+Supported formats: PNG, JPG, JPEG, WEBP
+
+Adjust cycle interval in =home/desktop/swww/wallpaper-cycle.sh=:
+
+#+begin_src bash
+INTERVAL=10000  # seconds
+#+end_src
+
+* Window Rules (Hyprland)
+
+In =home/desktop/hyprland/hyprland.lua=:
+
+#+begin_src lua
+-- Float a specific app
+hypr.windowrule.add("float", "class:pavucontrol")
+
+-- Set opacity
+hypr.windowrule.add("opacity 0.9 0.85", "class:discord")
+
+-- Assign to workspace
+hypr.windowrule.add("workspace 3", "class:spotify")
+#+end_src
+
+Find window class:
+
+#+begin_src bash
+hyprctl clients
+#+end_src
+
+* Multiple Hosts
+
+To add machine-specific overrides:
+
+1. Create host config in =hosts/<hostname>/=
+2. Import different hardware modules
+3. Override settings as needed
+
+Common settings stay in =hosts/common.nix=.

@@ -1,0 +1,68 @@
+#+TITLE: Anti_Bloat Dotfiles
+#+AUTHOR: [[https://github.com/silent-brad][Brad White]]
+#+DATE: 2026-03-12
+#+STARTUP: overview
+
+* Overview
+
+Fully reproducible NixOS configuration using Flakes and Home Manager.
+
+** Features
+
+- *Modular architecture* - Hardware profiles, services, and user configs are separated
+- *Nushell + Starship* - Modern shell with informative prompt
+- *Hyprland + Hyprlua* - Wayland compositor configured in Lua
+- *Neovim + Lazy.nvim* - Extensible editor setup
+- *Reproducible* - Single command deploys entire system
+
+* Quick Start
+
+#+begin_src bash
+# Clone (if not already in place)
+git clone <repo-url> ~/dot-files
+cd ~/dot-files
+
+# Build and switch
+sudo nixos-rebuild switch --flake .#thinkpad-x220
+#+end_src
+
+* Directory Structure
+
+| Path | Purpose |
+|------+---------|
+| =flake.nix= | Entry point, inputs |
+| =hosts/= | Machine-specific configs |
+| =hardware/= | Hardware modules (profiles, peripherals, monitors) |
+| =modules/= | Reusable NixOS modules |
+| =home/= | Home Manager user configs |
+| =packages/= | Custom package definitions |
+| =wallpapers/= | Wallpaper collection |
+| =docs/= | Documentation |
+
+* Hosts
+
+** thinkpad-x220
+
+ThinkPad X220 Tablet with Intel i5-2520M, Intel HD Graphics.
+
+Hardware modules included:
+- ThinkPad X220 profile (ACPI, touchpad)
+- Intel GPU
+- Canon G6000 printer
+- Ultrabase dock
+
+* Common Commands
+
+| Command | Purpose |
+|---------+---------|
+| =sudo nixos-rebuild switch --flake .#thinkpad-x220= | Apply system changes |
+| =sudo nixos-rebuild test --flake .#thinkpad-x220= | Test without making permanent |
+| =sudo nixos-rebuild build --flake .#thinkpad-x220= | Build only |
+| =nix flake update= | Update all flake inputs |
+| =nix flake update hyprlua= | Update specific input |
+
+* See Also
+
+- [[file:INSTALLATION.org][Installation Guide]]
+- [[file:HARDWARE.org][Adding Hardware]]
+- [[file:CUSTOMIZATION.org][Customization]]

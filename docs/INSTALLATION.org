@@ -1,0 +1,138 @@
+#+TITLE: Installation Guide
+#+AUTHOR: [[https://github.com/silent-brad][Brad White]]
+#+DATE: 2026-03-12
+#+STARTUP: overview
+
+* Prerequisites
+
+- NixOS installed (any version)
+- Flakes enabled (already in this config)
+- Git installed
+
+* Fresh Install
+
+** 1. Clone Repository
+
+#+begin_src bash
+git clone <repo-url> ~/dot-files
+cd ~/dot-files
+#+end_src
+
+** 2. Copy Hardware Configuration
+
+Generate hardware config for your machine:
+
+#+begin_src bash
+sudo nixos-generate-config --show-hardware-config > hosts/<hostname>/hardware.nix
+#+end_src
+
+Or copy existing:
+
+#+begin_src bash
+sudo cp /etc/nixos/hardware-configuration.nix hosts/<hostname>/hardware.nix
+#+end_src
+
+** 3. Create Host Entry
+
+Create =hosts/<hostname>/default.nix= based on an existing host.
+
+Add to =flake.nix=:
+
+#+begin_src nix
+nixosConfigurations.<hostname> = nixpkgs.lib.nixosSystem {
+  inherit system;
+  specialArgs = { inherit inputs; };
+  modules = [
+    ./hosts/<hostname>
+    # ... home-manager config
+  ];
+};
+#+end_src
+
+** 4. Update User Configuration
+
+Edit =home/default.nix=:
+- Set =home.username=
+- Set =home.homeDirectory=
+- Configure =programs.git.userEmail=
+
+** 5. Build and Switch
+
+#+begin_src bash
+# Test first
+sudo nixos-rebuild test --flake .#<hostname>
+
+# If successful, switch
+sudo nixos-rebuild switch --flake .#<hostname>
+#+end_src
+
+* Migration from Existing NixOS
+
+** 1. Backup Current Config
+
+#+begin_src bash
+cp -r /etc/nixos ~/nixos-backup
+#+end_src
+
+** 2. Clone This Repo
+
+#+begin_src bash
+git clone <repo-url> ~/dot-files
+#+end_src
+
+** 3. Copy Hardware Config
+
+#+begin_src bash
+cp /etc/nixos/hardware-configuration.nix ~/dot-files/hosts/thinkpad-x220/hardware.nix
+#+end_src
+
+** 4. Test Build
+
+#+begin_src bash
+cd ~/dot-files
+sudo nixos-rebuild test --flake .#thinkpad-x220
+#+end_src
+
+** 5. Switch
+
+#+begin_src bash
+sudo nixos-rebuild switch --flake .#thinkpad-x220
+#+end_src
+
+* Rollback
+
+NixOS keeps previous generations. To rollback:
+
+#+begin_src bash
+# List generations
+sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
+
+# Rollback to previous
+sudo nixos-rebuild switch --rollback
+
+# Or boot into previous generation from GRUB menu
+#+end_src
+
+* Post-Install
+
+** Set User Password
+
+#+begin_src bash
+passwd
+#+end_src
+
+** Hyprlua Plugin
+
+The Hyprlua package needs to be built and loaded:
+
+#+begin_src bash
+# Build hyprlua (update hash first in packages/hyprlua.nix)
+nix-prefetch-github cacarico hyprlua --rev v0.0.2
+
+# After rebuild, load plugin
+hyprctl plugin load /path/to/libhyprlua.so
+#+end_src
+
+** Wallpapers
+
+Add wallpapers to =~/Pictures/Wallpapers/= or =wallpapers/= directory.

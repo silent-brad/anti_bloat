@@ -1,0 +1,65 @@
+{
+  "nodes": {
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1773324064,
+        "narHash": "sha256-CxgWYEenlf1z5KmbUSnBJ10rwfcV5Hbc00arXA6AMJc=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "7cd3093fc6a08f72b42761a37891624812859453",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "hyprlua": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773100140,
+        "narHash": "sha256-Jlej55hRuUhL7gknvyGbynTQ0axTWcyu/jnQ+p4AWlk=",
+        "owner": "cacarico",
+        "repo": "hyprlua",
+        "rev": "147ce5af6858388e6ada63927859d2ddd3a7ec93",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cacarico",
+        "repo": "hyprlua",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1773122722,
+        "narHash": "sha256-FIqHByVqxCprNjor1NqF80F2QQoiiyqanNNefdlvOg4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "62dc67aa6a52b4364dd75994ec00b51fbf474e50",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "home-manager": "home-manager",
+        "hyprlua": "hyprlua",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

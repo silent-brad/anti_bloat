@@ -1,0 +1,188 @@
+#+TITLE: Adding Hardware
+#+AUTHOR: [[https://github.com/silent-brad][Brad White]]
+#+DATE: 2026-03-12
+#+STARTUP: overview
+
+* Overview
+
+Hardware configurations are modular and stored in =hardware/=:
+
+| Directory | Purpose |
+|-----------+---------|
+| =profiles/= | Machine-specific (laptops, desktops) |
+| =peripherals/= | External devices (printers, docks) |
+| =monitors/= | Display configurations |
+
+* Adding a New Machine
+
+** 1. Create Hardware Profile
+
+Create =hardware/profiles/<machine>.nix=:
+
+#+begin_src nix
+{ config, pkgs, lib, ... }:
+
+{
+  # Kernel modules specific to this hardware
+  boot.kernelModules = [ "module1" "module2" ];
+
+  # Firmware
+  hardware.enableAllFirmware = true;
+
+  # Input devices
+  services.libinput = {
+    enable = true;
+    touchpad = {
+      naturalScrolling = true;
+      tapping = true;
+    };
+  };
+}
+#+end_src
+
+** 2. Create Host Directory
+
+#+begin_src bash
+mkdir -p hosts/<hostname>
+#+end_src
+
+** 3. Generate Hardware Config
+
+#+begin_src bash
+sudo nixos-generate-config --show-hardware-config > hosts/<hostname>/hardware.nix
+#+end_src
+
+** 4. Create Host default.nix
+
+#+begin_src nix
+{ config, pkgs, inputs, ... }:
+
+{
+  imports = [
+    ./hardware.nix
+    ../common.nix
+    ../../hardware/profiles/<machine>.nix
+    # Add other hardware modules as needed
+  ];
+
+  networking.hostName = "<hostname>";
+
+  # Boot loader config for this machine
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/sda";
+  };
+
+  # ... rest of config
+}
+#+end_src
+
+** 5. Add to flake.nix
+
+#+begin_src nix
+nixosConfigurations.<hostname> = nixpkgs.lib.nixosSystem {
+  inherit system;
+  specialArgs = { inherit inputs; };
+  modules = [
+    ./hosts/<hostname>
+    home-manager.nixosModules.home-manager
+    {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.users.<username> = import ./home;
+      home-manager.extraSpecialArgs = { inherit inputs; };
+    }
+  ];
+};
+#+end_src
+
+* Adding a Printer
+
+** Example: Canon G6000
+
+=hardware/peripherals/canon-g6000.nix=:
+
+#+begin_src nix
+{ config, pkgs, lib, ... }:
+
+{
+  hardware.printers = {
+    ensurePrinters = [{
+      name = "Canon_G6000_series";
+      location = "Home";
+      deviceUri = "dnssd://Canon%20G6000%20series._ipp._tcp.local/?uuid=...";
+      model = "canong6000.ppd";
+      ppdOptions = { PageSize = "A4"; };
+    }];
+    ensureDefaultPrinter = "Canon_G6000_series";
+  };
+}
+#+end_src
+
+** Finding Printer URI
+
+#+begin_src bash
+# List available printers
+lpinfo -v
+
+# For network printers with Avahi
+avahi-browse -a
+#+end_src
+
+* Adding a Dock/Hub
+
+** Example: ThinkPad Ultrabase
+
+=hardware/peripherals/ultrabase.nix=:
+
+#+begin_src nix
+{ config, pkgs, lib, ... }:
+
+{
+  # Ethernet adapter
+  boot.kernelModules = [ "e1000e" ];
+
+  # USB hub rules (optional)
+  services.udev.extraRules = ''
+    # ThinkPad Ultrabase
+    SUBSYSTEM=="usb", ATTR{idVendor}=="17ef", MODE="0666"
+  '';
+}
+#+end_src
+
+* Adding Monitor Profiles
+
+Kanshi profiles are in =home/desktop/kanshi/default.nix=.
+
+** Finding Monitor Names
+
+#+begin_src bash
+hyprctl monitors
+# or
+wlr-randr
+#+end_src
+
+** Adding a Profile
+
+#+begin_src nix
+{
+  profile.name = "office";
+  profile.outputs = [
+    {
+      criteria = "eDP-1";
+      status = "disable";
+    }
+    {
+      criteria = "DP-1";
+      mode = "2560x1440@144Hz";
+      position = "0,0";
+    }
+  ];
+}
+#+end_src
+
+* Tips
+
+- Use =lspci= and =lsusb= to identify hardware
+- Check =dmesg= for driver messages
+- NixOS Hardware repo has many profiles: https://github.com/NixOS/nixos-hardware
