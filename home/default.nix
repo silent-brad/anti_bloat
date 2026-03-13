@@ -43,11 +43,6 @@
     libwebp
 
     # Development
-    gcc
-    go
-    nodejs
-    nimble
-    nimlsp
     amp-cli
     awscli2
     terraform

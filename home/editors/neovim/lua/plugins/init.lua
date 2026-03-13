@@ -145,5 +145,4 @@ return {
       require("supermaven-nvim").setup({})
     end,
   },
-
 }

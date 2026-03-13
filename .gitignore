@@ -2,6 +2,9 @@
 result
 result-*
 
+# 99
+tmp
+
 # Editor artifacts
 *.swp
 *.swo
