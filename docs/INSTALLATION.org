@@ -14,8 +14,8 @@
 ** 1. Clone Repository
 
 #+begin_src bash
-git clone <repo-url> ~/dot-files
-cd ~/dot-files
+git clone https://github.com/silent-brad/anti_bloat ~/anti_bloat
+cd ~/anti_bloat
 #+end_src
 
 ** 2. Copy Hardware Configuration
@@ -77,7 +77,7 @@ cp -r /etc/nixos ~/nixos-backup
 ** 2. Clone This Repo
 
 #+begin_src bash
-git clone <repo-url> ~/dot-files
+git clone <repo-url> ~/anti_bloat
 #+end_src
 
 ** 3. Copy Hardware Config

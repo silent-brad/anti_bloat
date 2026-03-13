@@ -3,35 +3,35 @@
 $env.config = {
   show_banner: false
 
-  edit_mode: nvim
+  edit_mode: vi
 
   keybindings: [
     {
       name: completion_menu
       modifier: control
       keycode: char_n
-      mode: nvim
+      mode: vi_normal
       event: { send: menu name: completion_menu }
     }
     {
       name: completion_previous
       modifier: control
       keycode: char_p
-      mode: nvim
+      mode: vi_normal
       event: { send: menuprevious }
     }
     {
       name: history_menu
       modifier: control
       keycode: char_r
-      mode: nvim
+      mode: vi_normal
       event: { send: menu name: history_menu }
     }
     {
       name: clear_screen
       modifier: control
       keycode: char_l
-      mode: nvim
+      mode: vi_normal
       event: { send: clearscreen }
     }
   ]
@@ -50,8 +50,7 @@ $env.config = {
   }
 
   cursor_shape: {
-    nvim: line
-    vi_insert: line
     vi_normal: block
+    vi_insert: line
   }
 }

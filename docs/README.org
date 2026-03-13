@@ -19,8 +19,8 @@ Fully reproducible NixOS configuration using Flakes and Home Manager.
 
 #+begin_src bash
 # Clone (if not already in place)
-git clone <repo-url> ~/dot-files
-cd ~/dot-files
+git clone https://github.com/silent-brad/anti_bloat ~/anti_bloat
+cd ~/anti_bloat
 
 # Build and switch
 sudo nixos-rebuild switch --flake .#thinkpad-x220

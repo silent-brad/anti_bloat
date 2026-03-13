@@ -19,4 +19,4 @@ opt.undofile = true
 opt.splitright = true
 opt.splitbelow = true
 
-require("lazy")
+require("lazy-bootstrap")

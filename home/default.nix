@@ -24,7 +24,6 @@
   home.packages = with pkgs; [
     # Browsers
     brave
-    chromium
 
     # Desktop apps
     krita
@@ -44,14 +43,15 @@
     libwebp
 
     # Development
+    gcc
+    go
+    nodejs
+    nimble
+    nimlsp
     amp-cli
-    helix
-    nimlangserver
-    nph
     awscli2
     terraform
     awsebcli
-    flyctl
     codecrafters-cli
 
     # CLI tools
@@ -69,11 +69,6 @@
     radicle-node
     radicle-httpd
     radicle-explorer
-
-    # Misc
-    quickemu
-    kitty
-    any-nix-shell
   ];
 
   # XDG directories

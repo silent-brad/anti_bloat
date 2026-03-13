@@ -1,0 +1,166 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[](overlay)\
+$os\
+$username\
+[](bg:iris fg:overlay)\
+$directory\
+[](fg:iris bg:foam)\
+$git_branch\
+[](fg:foam bg:pine)\
+$c\
+$cpp\
+$rust\
+$golang\
+$nodejs\
+$ocaml\
+$ruby\
+$lua\
+$nim\
+$fennel\
+$elixir\
+$java\
+$kotlin\
+$haskell\
+$python\
+[](fg:pine bg:gold)\
+[ ](fg:gold)\
+$line_break$character"""
+
+palette = "rose-pine"
+
+[palettes.rose-pine]
+overlay = '#26233a'
+love = '#eb6f92'
+gold = '#f6c177'
+rose = '#ebbcba'
+pine = '#31748f'
+foam = '#9ccfd8'
+iris = '#c4a7e7'
+
+[os]
+disabled = false
+style = "bg:overlay fg:iris"
+
+[os.symbols]
+NixOS = ""
+
+[username]
+show_always = true
+style_user = "bg:overlay fg:iris"
+style_root = "bg:overlay fg:iris"
+format = '[ $user ]($style)'
+
+[directory]
+style = "bg:iris fg:pine"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+"Developer" = "󰲋 "
+
+[git_branch]
+symbol = ""
+style = "bg:foam"
+format = '[[ $symbol $branch ](fg:iris bg:foam)]($style)'
+
+#[git_status]
+#style = "bg:foam"
+#format = '[[($all_status$ahead_behind )](fg:iris bg:foam)]($style)'
+#up_to_date = '[ ✓ ](bg:overlay fg:iris)'
+#untracked = '[?\($count\)](bg:overlay fg:gold)'
+#stashed = '[\$](bg:overlay fg:iris)'
+#modified = '[!\($count\)](bg:overlay fg:gold)'
+#renamed = '[»\($count\)](bg:overlay fg:iris)'
+#deleted = '[✘\($count\)](style)'
+#staged = '[++\($count\)](bg:overlay fg:gold)'
+#ahead = '[⇡\(${count}\)](bg:overlay fg:foam)'
+#diverged = '⇕[\[](bg:overlay fg:iris)[⇡\(${ahead_count}\)](bg:overlay fg:foam)[⇣\(${behind_count}\)](bg:overlay fg:rose)[\]](bg:overlay fg:iris)'
+#behind = '[⇣\(${count}\)](bg:overlay fg:rose)'
+
+[nodejs]
+symbol = ""
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[c]
+symbol = " "
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[cpp]
+symbol = " "
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[ocaml]
+symbol = ""
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[fennel]
+symbol = ""
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[nim]
+symbol = "󰆥"
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[ruby]
+symbol = ""
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[lua]
+symbol = ""
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[java]
+symbol = ""
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[kotlin]
+symbol = ""
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[haskell]
+symbol = ""
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[python]
+symbol = ""
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[elixir]
+symbol = ""
+style = "bg:rose"
+format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+
+[line_break]
+disabled = true
+
+[character]
+disabled = true

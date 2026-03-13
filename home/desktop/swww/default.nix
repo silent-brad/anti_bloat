@@ -3,8 +3,8 @@
 {
   home.packages = [ pkgs.swww ];
 
-  home.file.".local/bin/wallpaper-cycle.sh" = {
-    source = ./wallpaper-cycle.sh;
+  home.file.".local/bin/wallpaper-cycle.nu" = {
+    source = ./wallpaper-cycle.nu;
     executable = true;
   };
 
@@ -16,7 +16,7 @@
     };
     Service = {
       Type = "simple";
-      ExecStart = "${config.home.homeDirectory}/.local/bin/wallpaper-cycle.sh";
+      ExecStart = "${config.home.homeDirectory}/.local/bin/wallpaper-cycle.nu";
       Restart = "on-failure";
       RestartSec = 5;
     };
