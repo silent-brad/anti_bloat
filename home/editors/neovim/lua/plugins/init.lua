@@ -47,6 +47,7 @@ return {
         "json",
         "yaml",
         "nim",
+        "typst",
 			}
       -- Org mode
       org = {
@@ -127,6 +128,17 @@ return {
     end,
   },
   
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("nvim-tree").setup()
+    end,
+    keys = {
+      { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle NvimTree" },
+    },
+  },
+
   {
     "supermaven-inc/supermaven-nvim",
     config = function()

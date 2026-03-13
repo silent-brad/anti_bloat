@@ -31,13 +31,31 @@ return {
     require("mason").setup()
     require("mason-lspconfig").setup({
       ensure_installed = {
-        "lua_ls",
         "rust_analyzer",
         "gopls",
         "vtsls",
         "tailwindcss",
         "angularls",
         "nim_langserver",
+
+        -- Lua
+        "lua_ls",
+        "emmylua-codeformat",
+        "luacheck",
+        "luaformatter",
+        "stylua",
+        "luau-lsp",
+        "selene",
+
+        -- Typst
+        "typst-lsp",
+        "typstyle",
+
+        "semgrep",
+
+        -- CSS
+        "stylelint",
+        "stylelint-lsp",
       },
       handlers = {
           function(server_name) -- default handler (optional)
