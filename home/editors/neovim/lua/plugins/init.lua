@@ -7,6 +7,9 @@ return {
 			require("rose-pine").setup({
 				variant = "main",
 				dark_variant = "main",
+				styles = {
+					transparency = true,
+				},
 			})
 			vim.cmd("colorscheme rose-pine")
 		end,
@@ -26,7 +29,7 @@ return {
 
 	{
 		"nvim-treesitter/nvim-treesitter",
-		lazy = true,
+		lazy = false,
 		build = ":TSUpdate",
 		config = function()
 			local ts = require("nvim-treesitter")
@@ -137,6 +140,13 @@ return {
     keys = {
       { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle NvimTree" },
     },
+  },
+
+  {
+    "numToStr/Comment.nvim",
+    {
+        -- add any options here
+    }
   },
 
   {

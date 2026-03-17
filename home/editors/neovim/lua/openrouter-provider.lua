@@ -1,12 +1,21 @@
 -- Custom OpenRouter provider for ThePrimeagen/99
--- Bypasses opencode CLI entirely, calling OpenRouter API directly via curl.
--- The script extracts <TEMP_FILE> from the query, calls the API, and writes
--- the response to that file — fulfilling 99's provider contract.
+-- Uses curl via vim.system instead of Nushell.
+-- API key is loaded from secrets.lua (gitignored).
 
 local M = {}
 
---- Build the OpenRouter provider once 99 is loaded.
---- Must be called after require("99") so BaseProvider is available.
+local function get_api_key()
+  local ok, secrets = pcall(require, "secrets")
+  if ok and secrets.openrouter_api_key and secrets.openrouter_api_key ~= "YOUR_KEY_HERE" then
+    return secrets.openrouter_api_key
+  end
+  local env_key = os.getenv("OPENROUTER_API_KEY")
+  if env_key and env_key ~= "" then
+    return env_key
+  end
+  return nil
+end
+
 function M.build()
   local BaseProvider = require("99.providers").BaseProvider
 
@@ -21,89 +30,109 @@ function M.build()
     return "moonshotai/kimi-k2.5"
   end
 
-  --- Build a command that:
-  ---   1. Calls OpenRouter chat completions API via curl
-  ---   2. Extracts the response content with jq
-  ---   3. Writes it to the temp file parsed from <TEMP_FILE>...</TEMP_FILE> in the query
-  function OpenRouterProvider._build_command(_, query, context)
-    -- Extract the temp file path from the query text
-    local tmp_file = context.tmp_file
+  -- Required by pickers.lua for provider discovery; unused since make_request is overridden
+  function OpenRouterProvider._build_command(_, _, _)
+    return { "true" }
+  end
 
-    -- We use a nu script inline to handle the API call and file write.
-    -- The query is passed via a temp prompt file to avoid shell escaping issues.
-    local prompt_file = tmp_file .. "-prompt"
+  function OpenRouterProvider:make_request(query, context, observer)
+    observer.on_start()
 
-    -- Write the query to the prompt file so bash can read it safely
-    local f = io.open(prompt_file, "w")
-    if f then
-      f:write(query)
-      f:close()
+    local api_key = get_api_key()
+    if not api_key then
+      observer.on_stderr("OPENROUTER_API_KEY not set (check secrets.lua or env)\n")
+      observer.on_complete("failed", "OPENROUTER_API_KEY not set")
+      return
     end
 
-    -- Write the system message to its own file to avoid shell escaping issues
-    local system_file = tmp_file .. "-system"
     local system_msg = "You are a code-writing assistant. "
       .. "Output ONLY raw code or raw text as requested. "
       .. "NEVER wrap output in markdown code fences (```) or only add commentary in comments. "
       .. "When asked to write to a file path, output the exact file contents only."
-    local sf = io.open(system_file, "w")
-    if sf then
-      sf:write(system_msg)
-      sf:close()
-    end
 
-    -- Use nu's open command to read prompt and system message directly from disk.
-    -- This avoids shell variable expansion, ARG_MAX limits, and escaping issues
-    -- with large prompts that contain file contents and special characters.
-    local script = string.format([[
-let model = %q
-let tmp_file = %q
-let prompt_file = %q
-let system_file = %q
+    local payload = vim.json.encode({
+      model = context.model,
+      messages = {
+        { role = "system", content = system_msg },
+        { role = "user", content = query },
+      },
+    })
 
-let api_key = (if ($env | get -i OPENROUTER_API_KEY | is-empty) { 
-  print -e "OPENROUTER_API_KEY not set"
-  exit 1
-} else { 
-  $env.OPENROUTER_API_KEY 
-})
+    local accumulated = {}
 
-let prompt_content = (open --raw $prompt_file)
-let system_content = (open --raw $system_file)
+    local proc = vim.system(
+      {
+        "curl", "-sS",
+        "https://openrouter.ai/api/v1/chat/completions",
+        "-H", "Authorization: Bearer " .. api_key,
+        "-H", "Content-Type: application/json",
+        "-d", payload,
+      },
+      {
+        text = true,
+        stdout = vim.schedule_wrap(function(_, data)
+          if context:is_cancelled() or not data then
+            return
+          end
+          table.insert(accumulated, data)
+          observer.on_stdout(data)
+        end),
+        stderr = vim.schedule_wrap(function(_, data)
+          if data then
+            observer.on_stderr(data)
+          end
+        end),
+      },
+      vim.schedule_wrap(function(obj)
+        if context:is_cancelled() then
+          observer.on_complete("cancelled", "")
+          return
+        end
 
-let payload = {
-  model: $model,
-  messages: [
-    {role: "system", content: $system_content},
-    {role: "user", content: $prompt_content}
-  ]
-} | to json
+        if obj.code ~= 0 then
+          observer.on_complete("failed", "curl exit code: " .. obj.code .. "\n" .. (obj.stderr or ""))
+          return
+        end
 
-let response = (http post https://openrouter.ai/api/v1/chat/completions --content-type application/json --header [Authorization $"Bearer ($api_key)"] $payload)
+        local raw = table.concat(accumulated)
+        local ok, decoded = pcall(vim.json.decode, raw)
+        if not ok then
+          observer.on_complete("failed", "Failed to parse API response: " .. raw)
+          return
+        end
 
-let content = ($response | get -i choices.0.message.content | default "")
+        local content = ""
+        if decoded.choices and decoded.choices[1] and decoded.choices[1].message then
+          content = decoded.choices[1].message.content or ""
+        end
 
-if ($content | is-empty) {
-  print -e "Error: empty response from OpenRouter"
-  print -e $response
-  exit 1
-}
+        if content == "" then
+          observer.on_complete("failed", "Empty response from OpenRouter: " .. raw)
+          return
+        end
 
-# Strip markdown code fences if the LLM still wraps output
-let content = ($content | str replace -r '^```[a-z]*\n' '' | str replace -r '\n```$' '')
+        -- Strip markdown code fences if the LLM still wraps output
+        content = content:gsub("^```[a-z]*\n", ""):gsub("\n```$", "")
 
-$content | save -f $tmp_file
-]], context.model, tmp_file, prompt_file, system_file)
+        -- Write to tmp_file so _retrieve_response works
+        local f = io.open(context.tmp_file, "w")
+        if f then
+          f:write(content)
+          f:close()
+        end
 
-    return { "nu", "-c", script }
+        observer.on_complete("success", content)
+      end)
+    )
+
+    context:_set_process(proc)
   end
 
-  --- Fetch available models from the OpenRouter API
   function OpenRouterProvider.fetch_models(callback)
     vim.system(
       {
-        "nu", "-c",
-        [[http get https://openrouter.ai/api/v1/models | get data.id | sort]],
+        "curl", "-sS",
+        "https://openrouter.ai/api/v1/models",
       },
       { text = true },
       vim.schedule_wrap(function(obj)
@@ -111,7 +140,20 @@ $content | save -f $tmp_file
           callback(nil, "Failed to fetch models from OpenRouter: " .. (obj.stderr or ""))
           return
         end
-        local models = vim.split(obj.stdout, "\n", { trimempty = true })
+        local ok, decoded = pcall(vim.json.decode, obj.stdout)
+        if not ok then
+          callback(nil, "Failed to parse models response")
+          return
+        end
+        local models = {}
+        if decoded.data then
+          for _, m in ipairs(decoded.data) do
+            if m.id then
+              table.insert(models, m.id)
+            end
+          end
+        end
+        table.sort(models)
         callback(models, nil)
       end)
     )

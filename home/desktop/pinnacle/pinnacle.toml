@@ -1,0 +1,1 @@
+run = ["lua", "pinnacle_config.lua"]

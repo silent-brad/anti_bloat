@@ -3,7 +3,7 @@ result
 result-*
 
 # 99
-tmp
+tmp/
 
 # Editor artifacts
 *.swp
@@ -15,3 +15,4 @@ tmp
 secrets/
 *.age
 *.gpg
+home/editors/neovim/lua/secrets.lua

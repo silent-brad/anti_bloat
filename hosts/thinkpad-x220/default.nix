@@ -4,7 +4,7 @@
   imports = [
     ./hardware.nix
     ../common.nix
-    ../../modules/desktop/hyprland.nix
+    ../../modules/desktop/pinnacle.nix
     ../../modules/desktop/wayland.nix
     ../../modules/services/audio.nix
     ../../modules/services/printing.nix

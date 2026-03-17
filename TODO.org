@@ -1,5 +1,45 @@
 #+TITLE: TODO List for Anti_Bloat
 
+* TODO Replace Hyprlua with Pinnacle
+  Add transparent windows
+  Add waybar like topbar
+* TODO In devdocs, it references ~/home/../devdocs/~. Move to somewhere else.
+  Git is here: [[https://github.com/freeCodeCamp/devdocs]]
+* TODO Add new login screen (that is also themed) instead of GDM
+  Use plymouth bootsplash
+  Also, add ascii art to the login screen
+* TODO Replace Nu scripting in OpenRouterProvider with Lua
 * TODO Add Git config alias'
+  In ~home/default.nix~ add uncommitted toml file for Git creds/usernames.
 
-* TODO ..
+* TODO Fix NeoVim errors
+  #+BEGIN_SRC
+Error detected while processing function <SNR>41_NetrwBrowseChgDir[163]..<SNR>41_NetrwEditFile[10]..BufReadPost Autocommands for "*":
+Error executing lua callback: ...-neovim-unwrapped-0.11.6/share/nvim/runtime/filetype.lua:36: function <SNR>41_NetrwBrowseChgDir[163]..<
+SNR>41_NetrwEditFile[10]..BufReadPost Autocommands for "*"..FileType Autocommands for "nix": Vim(append):Error executing lua callback: .
+..wrapped-0.11.6/share/nvim/runtime/lua/vim/treesitter.lua:431: Parser could not be created for buffer 5 and language "nix"
+stack traceback:
+        [C]: in function 'assert'
+        ...wrapped-0.11.6/share/nvim/runtime/lua/vim/treesitter.lua:431: in function 'start'
+        /home/redironninja/.config/nvim/lua/plugins/init.lua:67: in function </home/redironninja/.config/nvim/lua/plugins/init.lua:66>
+        [C]: in function 'nvim_cmd'
+        ...-neovim-unwrapped-0.11.6/share/nvim/runtime/filetype.lua:36: in function <...-neovim-unwrapped-0.11.6/share/nvim/runtime/file
+type.lua:35>
+        [C]: in function 'pcall'
+        vim/shared.lua: in function <vim/shared.lua:0>
+        [C]: in function '_with'
+        ...-neovim-unwrapped-0.11.6/share/nvim/runtime/filetype.lua:35: in function <...-neovim-unwrapped-0.11.6/share/nvim/runtime/file
+type.lua:10>
+stack traceback:
+        [C]: in function '_with'
+        ...-neovim-unwrapped-0.11.6/share/nvim/runtime/filetype.lua:35: in function <...-neovim-unwrapped-0.11.6/share/nvim/runtime/file
+type.lua:10>
+  #+END_SRC
+* TODO Move Kanshi to hardware
+  Also, printing(in ~modules~)
+
+* TODO Add consistant theme (like Omarchy) on NeoVim, Hyprland, Waybar, Ghostty, Brave.
+
+* TODO Add more skills to 99
+
+* TODO Move to Systemd alternative?

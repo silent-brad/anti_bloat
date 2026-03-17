@@ -37,4 +37,5 @@
   xdg.configFile."nvim/lua/plugins/lsp.lua".source = ./lua/plugins/lsp.lua;
   xdg.configFile."nvim/lua/plugins/99.lua".source = ./lua/plugins/99.lua;
   xdg.configFile."nvim/lua/openrouter-provider.lua".source = ./lua/openrouter-provider.lua;
+  xdg.configFile."nvim/lua/secrets.lua".source = ./lua/secrets.lua;
 }

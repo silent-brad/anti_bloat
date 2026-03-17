@@ -1,27 +1,21 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
+let
+  hyprlua = pkgs.callPackage ../../../packages/hyprlua.nix {
+    src = inputs.hyprlua;
+  };
+in
 {
   wayland.windowManager.hyprland = {
     enable = true;
+    plugins = [ hyprlua ];
     settings = {
-      "$terminal" = "LIBGL_ALWAYS_SOFTWARE=1 ghostty";
-      "$browser" = "brave --ozone-platform=wayland --ozone-platform-hint=wayland --enable-features=TouchpadOverscrollHistoryNavigation";
-      "$fileManager" = "thunar";
-      "$menu" = "rofi -show drun";
-      "$mainMod" = "SUPER";
-
-      monitor = ",preferred,auto,auto";
-
       env = [
         "XCURSOR_SIZE,24"
         "HYPRCURSOR_SIZE,24"
       ];
 
-      exec-once = [
-        "hyprctl setcursor Adwaita 18"
-        "waybar"
-        "~/.local/bin/wallpaper-cycle.nu"
-      ];
+      monitor = [ ",preferred,auto,auto" ];
 
       general = {
         gaps_in = 3;
@@ -36,14 +30,16 @@
 
       decoration = {
         rounding = 2;
-        active_opacity = 1.0;
-        inactive_opacity = 1.0;
+        active_opacity = 0.8;
+        inactive_opacity = 0.75;
+
         shadow = {
           enabled = true;
           range = 2;
           render_power = 3;
           color = "rgba(1a1a1aee)";
         };
+
         blur = {
           enabled = true;
           size = 3;
@@ -54,13 +50,15 @@
 
       animations = {
         enabled = true;
+
         bezier = [
-          "easeOutQuint,0.23,1,0.32,1"
-          "easeInOutCubic,0.65,0.05,0.36,1"
-          "linear,0,0,1,1"
-          "almostLinear,0.5,0.5,0.75,1.0"
-          "quick,0.15,0,0.1,1"
+          "easeOutQuint, 0.23, 1, 0.32, 1"
+          "easeInOutCubic, 0.65, 0.05, 0.36, 1"
+          "linear, 0, 0, 1, 1"
+          "almostLinear, 0.5, 0.5, 0.75, 1.0"
+          "quick, 0.15, 0, 0.1, 1"
         ];
+
         animation = [
           "global, 1, 10, default"
           "border, 1, 5.39, easeOutQuint"
@@ -100,100 +98,33 @@
         kb_layout = "us";
         follow_mouse = 1;
         sensitivity = 0;
+
         touchpad = {
           natural_scroll = true;
         };
       };
 
-      bind = [
-        "CTRL, RETURN, fullscreen"
-        "$mainMod, return, exec, $terminal"
-        "$mainMod, K, exec, krita"
-        "$mainMod, O, exec, obsidian"
-        "$mainMod, A, exec, $browser"
-        "$mainMod, B, exec, $terminal -e btop"
-        "$mainMod, T, exec, $terminal -e nvim tl.md"
-        "$mainMod, Z, exec, zathura"
-        "$mainMod, P, exec, protonmail"
-        "$mainMod, Q, killactive,"
-        "$mainMod, M, exit,"
-        "$mainMod, F, exec, $fileManager"
-        "$mainMod, R, exec, $menu"
-        "$mainMod, S, exec, $browser --new-window --app=https://search.brave.com"
-        "$mainMod, SLASH, exec, $browser --new-window --app=https://search.nixos.org/packages"
-        "$mainMod, left, movefocus, l"
-        "$mainMod, right, movefocus, r"
-        "$mainMod, up, movefocus, u"
-        "$mainMod, down, movefocus, d"
-        "$mainMod, 1, workspace, 1"
-        "$mainMod, 2, workspace, 2"
-        "$mainMod, 3, workspace, 3"
-        "$mainMod, 4, workspace, 4"
-        "$mainMod, 5, workspace, 5"
-        "$mainMod, 6, workspace, 6"
-        "$mainMod, 7, workspace, 7"
-        "$mainMod, 8, workspace, 8"
-        "$mainMod, 9, workspace, 9"
-        "$mainMod, 0, workspace, 10"
-        "$mainMod SHIFT, 1, movetoworkspace, 1"
-        "$mainMod SHIFT, 2, movetoworkspace, 2"
-        "$mainMod SHIFT, 3, movetoworkspace, 3"
-        "$mainMod SHIFT, 4, movetoworkspace, 4"
-        "$mainMod SHIFT, 5, movetoworkspace, 5"
-        "$mainMod SHIFT, 6, movetoworkspace, 6"
-        "$mainMod SHIFT, 7, movetoworkspace, 7"
-        "$mainMod SHIFT, 8, movetoworkspace, 8"
-        "$mainMod SHIFT, 9, movetoworkspace, 9"
-        "$mainMod SHIFT, 0, movetoworkspace, 10"
-        "$mainMod, mouse_down, workspace, e+1"
-        "$mainMod, mouse_up, workspace, e-1"
-        "$mainMod, minus, resizeactive, -50 0"
-        "$mainMod, equal, resizeactive, 50 0"
-        "$mainMod SHIFT, minus, resizeactive, 0 -50"
-        "$mainMod SHIFT, equal, resizeactive, 0 50"
-        "$mainMod SHIFT, I, exec, hyprpicker -a"
-        "$mainMod CTRL, left, movewindow, l"
-        "$mainMod CTRL, right, movewindow, r"
-        "$mainMod CTRL, up, movewindow, u"
-        "$mainMod CTRL, down, movewindow, d"
+      exec-once = [
+        "hyprctl setcursor Adwaita 18"
+        "waybar"
+        "~/.local/bin/wallpaper-cycle.nu"
       ];
 
-      bindel = [
-        ",XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-        ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ",XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-        ",XF86MonBrightnessUp, exec, brightnessctl -e4 -n2 set 5%+"
-        ",XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-"
+      windowrule = [
+        "opacity 0.8 0.75, class:(.*)"
+        "opacity 0.97 0.9, class:(brave)"
+        "suppressevent maximize, class:(.*)"
       ];
 
-      bindl = [
-        ", XF86AudioNext, exec, playerctl next"
-        ", XF86AudioPause, exec, playerctl play-pause"
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioPrev, exec, playerctl previous"
+      layerrule = [
+        "blur, namespace:(rofi)"
       ];
 
       workspace = [
         "w[tv1], gapsout:0, gapsin:0"
         "f[1], gapsout:0, gapsin:0"
       ];
-
-      windowrule = [
-        "opacity 0.8 0.75, match:class .*"
-        "opacity 0.97 0.9, match:class ^(brave)"
-        "suppress_event maximize, match:class .*"
-      ];
-
-      layerrule = [
-        "blur on, match:namespace rofi"
-      ];
     };
-
-    extraConfig = ''
-      # Load Hyprlua plugin (uncomment after building)
-      # plugin = /path/to/libhyprlua.so
-    '';
   };
 
   xdg.configFile."hypr/hyprland.lua".source = ./hyprland.lua;

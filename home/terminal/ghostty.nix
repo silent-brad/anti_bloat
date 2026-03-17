@@ -9,6 +9,8 @@
       font-size = 12;
       shell-integration = "nushell";
       command = "nu";
+      window-decoration = false;
+      background-opacity = 0.85;
     };
   };
 }

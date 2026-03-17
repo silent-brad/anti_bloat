@@ -9,7 +9,7 @@
     serviceConfig = {
       Type = "simple";
       Restart = "always";
-      RestartSec = 10;
+      RestartSec = 2;
       WorkingDirectory = "/home/redironninja/devdocs";
       ExecStart = pkgs.writeShellScript "start-devdocs" ''
         #!/bin/sh

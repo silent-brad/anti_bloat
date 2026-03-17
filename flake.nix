@@ -9,13 +9,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprlua = {
-      url = "github:cacarico/hyprlua";
-      flake = false;
+    pinnacle = {
+      url = "github:pinnacle-comp/pinnacle";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, hyprlua, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
