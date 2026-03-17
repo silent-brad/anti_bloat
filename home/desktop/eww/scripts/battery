@@ -3,7 +3,7 @@
 let bat_path = "/sys/class/power_supply/BAT0"
 if not ($bat_path | path exists) {
     print ""
-    return
+    exit 0
 }
 
 let cap = (try { open $"($bat_path)/capacity" | str trim | into int } catch { 0 })

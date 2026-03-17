@@ -20,7 +20,8 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
 
-      secretsPath = ./secrets/secrets.nix;
+      # secrets.nix is gitignored, so we must read it via absolute path (requires --impure)
+      secretsPath = /home/redironninja/anti_bloat/secrets/secrets.nix;
       secrets =
         if builtins.pathExists secretsPath
         then import secretsPath

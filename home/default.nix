@@ -83,7 +83,7 @@
     createDirectories = true;
   };
 
-  # Git configuration (update values in secrets/secrets.lua)
+  # Git configuration (update values in secrets/secrets.nix)
   programs.git = {
     enable = true;
     settings.user.name = secrets.git_username or "silent-brad";

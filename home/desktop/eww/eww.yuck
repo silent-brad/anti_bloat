@@ -64,7 +64,7 @@
 (defwidget openrouter-widget []
   (box :class "openrouter" :orientation "h" :spacing 4
     {openrouter == "" ? "󱚣 --" :
-     "󱚣 $${openrouter.remaining} left ($${openrouter.used} used)"}))
+     "󱚣 ${openrouter.remaining} left (${openrouter.used} used)"}))
 
 ;; ── Bar layout ───────────────────────────────────────────────────
 

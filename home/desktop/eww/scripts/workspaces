@@ -1,8 +1,8 @@
-!/usr/bin/env nu
+#!/usr/bin/env nu
 # Query Pinnacle for active tags via pinnacle CLI, fallback to static list
 # Pinnacle doesn't have a simple CLI query yet, so we use a file-based approach:
 # The switch-workspace script writes the active workspace to a tmp file.
 let active_file = "/tmp/eww-active-workspace"
 let active = (try { open $active_file | str trim } catch { "1" })
 
-["1" "2" "3" "4" "5" "6" "7" "8" "9" "0"] | each { |name| {name: $name, active: ($name == $active)} } | to json
+["1" "2" "3" "4" "5" "6" "7" "8" "9" "0"] | each { |name| {name: $name, active: ($name == $active)} } | to json -r

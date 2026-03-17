@@ -4,32 +4,32 @@ let fallback = '{"credits":"--","used":"--","remaining":"--"}'
 let secrets_file = ($env.HOME | path join ".config/nvim/lua/secrets.lua")
 
 let key = if ($secrets_file | path exists) {
-  open $secrets_file
+  let matches = (open $secrets_file
     | lines
     | where { $in | str contains "openrouter_api_key" }
     | first
-    | parse --regex 'openrouter_api_key\s*=\s*"(?P<key>[^"]+)"'
-    | get key.0?
+    | parse --regex 'openrouter_api_key\s*=\s*"(?P<key>[^"]+)"')
+  if ($matches | is-empty) { null } else { $matches | get key | first }
 } else { null }
 
 let key = if ($key == null or $key == "YOUR_KEY_HERE") {
-  $env.OPENROUTER_API_KEY? | default null
+  ($env | get -o OPENROUTER_API_KEY | default null)
 } else { $key }
 
-if ($key == null or $key == "") {
+if ($key == null or ($key | is-empty)) {
   print $fallback
   exit 0
 }
 
 let resp = try {
-  http get -H ["Authorization" $"Bearer ($key)"] https://openrouter.ai/api/v1/credits
+  http get -H {Authorization: $"Bearer ($key)"} https://openrouter.ai/api/v1/credits
 } catch {
   print $fallback
   exit 0
 }
 
-let total = $resp.data?.total_credits? | default null
-let used = $resp.data?.total_usage? | default null
+let total = ($resp | get -o data.total_credits | default null)
+let used = ($resp | get -o data.total_usage | default null)
 
 if ($total == null or $used == null) {
   print $fallback
@@ -38,6 +38,8 @@ if ($total == null or $used == null) {
 
 let remaining = $total - $used
 
-{ credits: ($total | into string -d 2), used: ($used | into string -d 2), remaining: ($remaining | into string -d 2) }
-  | to json -r
-  | print
+{
+  credits: ($total | math round -p 2 | into string),
+  used: ($used | math round -p 2 | into string),
+  remaining: ($remaining | math round -p 2 | into string)
+} | to json -r | print

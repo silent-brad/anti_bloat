@@ -3,6 +3,7 @@
 let
   dependencies = with pkgs; [
     bash
+    nushell
     coreutils
     gawk
     jq
@@ -11,6 +12,7 @@ let
     wirelesstools
     pulseaudio
     procps
+    iproute2
   ];
   depPath = lib.makeBinPath dependencies;
 in
