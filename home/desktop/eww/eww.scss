@@ -1,0 +1,47 @@
+// Catppuccin Mocha palette (matching previous waybar)
+$bg:      #181824;
+$fg:      #cdd6f4;
+$accent:  #89b4fa;
+$surface: #25253a;
+
+* {
+  all: unset;
+  font-family: "MesloLGS NF", monospace;
+  font-size: 14px;
+  color: $fg;
+}
+
+window.bar {
+  background-color: $bg;
+}
+
+.launcher {
+  color: $accent;
+  background-color: $surface;
+  border-radius: 0px 0px 15px 0px;
+  padding: 0px 25px 0px 5px;
+  font-size: 18px;
+  margin-right: 20px;
+}
+
+.workspaces {
+  margin-left: 20px;
+}
+
+.ws-btn {
+  padding: 2px 6px;
+  margin-right: 3px;
+  color: $fg;
+}
+
+.ws-active {
+  color: $accent;
+}
+
+.clock,
+.network,
+.volume,
+.memory,
+.battery {
+  margin-right: 15px;
+}

@@ -1,0 +1,7 @@
+#!/usr/bin/env nu
+
+let mem = sys mem
+let used_gb = ($mem.used | into int) // 1024 // 1024 // 1024
+let total_gb = ($mem.total | into int) // 1024 // 1024 // 1024
+let pct = (($mem.used | into float) / ($mem.total | into float) * 100) | math round
+$"󰍛 ($pct)% [($used_gb)/($total_gb) GB]"

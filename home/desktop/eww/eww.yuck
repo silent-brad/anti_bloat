@@ -1,0 +1,92 @@
+;; ── Polling variables ──────────────────────────────────────────────
+
+(defpoll time
+  :interval "30s"
+  `date "+%a, %b %d    %I:%M %p"`)
+
+(defpoll memory
+  :interval "5s"
+  `scripts/memory`)
+
+(defpoll volume
+  :interval "1s"
+  `scripts/volume`)
+
+(defpoll network
+  :interval "5s"
+  `scripts/network`)
+
+(defpoll battery
+  :interval "10s"
+  `scripts/battery`)
+
+(defpoll workspaces
+  :interval "1s"
+  `scripts/workspaces`)
+
+;; ── Widgets ──────────────────────────────────────────────────────
+
+(defwidget launcher []
+  (box :class "launcher"
+    ""))
+
+(defwidget workspaces-widget []
+  (box :class "workspaces" :orientation "h" :spacing 0
+    (for ws in workspaces
+      (button :class {ws.active == true ? "ws-btn ws-active" : "ws-btn"}
+              :onclick "scripts/switch-workspace ${ws.name}"
+        {ws.active == true ? "󱓻" : ws.name}))))
+
+(defwidget clock []
+  (box :class "clock"
+    "  ${time}"))
+
+(defwidget network-widget []
+  (box :class "network"
+    network))
+
+(defwidget volume-widget []
+  (box :class "volume"
+    volume))
+
+(defwidget memory-widget []
+  (box :class "memory"
+    memory))
+
+(defwidget battery-widget []
+  (box :class "battery"
+    battery))
+
+;; ── Bar layout ───────────────────────────────────────────────────
+
+(defwidget left []
+  (box :orientation "h" :halign "start" :spacing 0
+    (launcher)
+    (workspaces-widget)))
+
+(defwidget center []
+  (box :orientation "h" :halign "center"
+    (clock)))
+
+(defwidget right []
+  (box :orientation "h" :halign "end" :spacing 15
+    (network-widget)
+    (volume-widget)
+    (memory-widget)
+    (battery-widget)))
+
+(defwidget bar-layout []
+  (centerbox :orientation "h"
+    (left)
+    (center)
+    (right)))
+
+;; ── Window ───────────────────────────────────────────────────────
+
+(defwindow bar
+  :monitor 0
+  :geometry (geometry :x "0%" :y "0px" :width "100%" :height "26px" :anchor "top center")
+  :stacking "fg"
+  :exclusive true
+  :namespace "eww-bar"
+  (bar-layout))

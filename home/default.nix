@@ -9,6 +9,7 @@
     ./desktop/pinnacle
     ./desktop/swww
     ./desktop/rofi
+    ./desktop/eww
     ./desktop/kanshi
     ./desktop/cursor.nix
   ];

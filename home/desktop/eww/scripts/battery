@@ -1,0 +1,24 @@
+#!/usr/bin/env nu
+
+let bat_path = "/sys/class/power_supply/BAT0"
+if not ($bat_path | path exists) {
+    print ""
+    return
+}
+
+let cap = (try { open $"($bat_path)/capacity" | str trim | into int } catch { 0 })
+let status = (try { open $"($bat_path)/status" | str trim } catch { "Unknown" })
+
+if $status == "Charging" {
+    print $"  ($cap)%"
+} else if $cap <= 15 {
+    print $"  ($cap)%"
+} else if $cap <= 30 {
+    print $"  ($cap)%"
+} else if $cap <= 50 {
+    print $"  ($cap)%"
+} else if $cap <= 75 {
+    print $"  ($cap)%"
+} else {
+    print $"  ($cap)%"
+}

@@ -2,7 +2,7 @@
 
 * DONE Replace Hyprlua with Pinnacle
   Add transparent windows
-* TODO Add waybar like topbar but with eww
+* DONE Add waybar like topbar but with eww
 * TODO Add new login screen (that is also themed) instead of GDM
   Use plymouth bootsplash
   Also, add ascii art to the login screen

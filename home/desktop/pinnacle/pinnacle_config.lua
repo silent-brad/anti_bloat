@@ -296,6 +296,8 @@ Pinnacle.setup(function()
 			local t = Tag.get(name)
 			if t then
 				t:switch_to()
+				-- Notify EWW of workspace change
+				Process.command({ shell_cmd = { "sh", "-c" }, cmd = { "echo " .. name .. " > /tmp/eww-active-workspace" } }):spawn()
 			end
 		end)
 		Input.keybind({ "super", "shift" }, tag_keys[i], function()

@@ -1,0 +1,19 @@
+#!/usr/bin/env nu
+
+let vol_str = (try { ^pactl get-sink-volume @DEFAULT_SINK@ | parse -r '(\d+)%' | get capture0.0 } catch { "" })
+let is_muted = (try { ^pactl get-sink-mute @DEFAULT_SINK@ | str contains "yes" } catch { false })
+
+if $is_muted {
+    "󰝟"
+} else if ($vol_str | is-empty) {
+    "󰕿 --"
+} else {
+    let vol = ($vol_str | into int)
+    if $vol <= 30 {
+        $"󰕿 ($vol)%"
+    } else if $vol <= 70 {
+        $"󰖀 ($vol)%"
+    } else {
+        $"󰕾 ($vol)%"
+    }
+}

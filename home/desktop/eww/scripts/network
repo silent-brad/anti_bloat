@@ -1,0 +1,28 @@
+#!/usr/bin/env nu
+
+# Check for ethernet first
+if (ip link show | lines | any {|line| $line =~ 'state UP.*ether' }) {
+    print "󰈀 100%"
+    exit 0
+}
+
+# Check wifi
+let iface = (do -i { iw dev } | lines | where {|it| $it =~ 'Interface'} | parse 'Interface {iface}' | get iface.0? | default "")
+if ($iface | is-empty) {
+    print "󰖪 0%"
+    exit 0
+}
+
+let signal = (do -i { iwconfig $iface } | lines | parse --regex 'Signal level=([-\d]+)' | get capture0.0? | default "")
+if ($signal | is-empty) {
+    print "󰖪 0%"
+    exit 0
+}
+
+# Convert dBm to rough percentage (range: -90 to -30)
+let signal_int = ($signal | into int)
+let pct = (($signal_int + 90) * 100 / 60)
+let pct = ([$pct 100] | math min)
+let pct = ([$pct 0] | math max)
+
+print $"  ($pct)%"
