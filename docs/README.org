@@ -11,7 +11,7 @@ Fully reproducible NixOS configuration using Flakes and Home Manager.
 
 - *Modular architecture* - Hardware profiles, services, and user configs are separated
 - *Nushell + Starship* - Modern shell with informative prompt
-- *Hyprland + Hyprlua* - Wayland compositor configured in Lua
+- *Pinnacle* - Wayland compositor configured in Lua
 - *Neovim + Lazy.nvim* - Extensible editor setup
 - *Reproducible* - Single command deploys entire system
 
@@ -37,6 +37,7 @@ sudo nixos-rebuild switch --flake .#thinkpad-x220
 | =home/= | Home Manager user configs |
 | =packages/= | Custom package definitions |
 | =wallpapers/= | Wallpaper collection |
+| =secrets/= | User secrets (gitignored, see =.example= files) |
 | =docs/= | Documentation |
 
 * Hosts
@@ -60,6 +61,23 @@ Hardware modules included:
 | =sudo nixos-rebuild build --flake .#thinkpad-x220= | Build only |
 | =nix flake update= | Update all flake inputs |
 | =nix flake update hyprlua= | Update specific input |
+
+* Secrets
+
+All user-specific values live in =secrets/secrets.nix=.
+This file is gitignored and imported by Nix at build time. A =secrets.lua= is
+generated from it for Neovim.
+
+#+begin_src bash
+cp secrets/secrets.nix.example secrets/secrets.nix
+# Then edit with your real values
+#+end_src
+
+These are consumed by:
+- =home/editors/neovim= — generates =secrets.lua= into nvim config for the OpenRouter provider
+- =home/desktop/eww= — reads the generated =secrets.lua= for the OpenRouter credits widget
+- =home/default.nix= — reads =git_username= / =git_email= for Git config
+- =hosts/*/default.nix= — reads =hostname=
 
 * See Also
 

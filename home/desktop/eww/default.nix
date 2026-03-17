@@ -6,6 +6,7 @@ let
     coreutils
     gawk
     jq
+    curl
     networkmanager
     wirelesstools
     pulseaudio

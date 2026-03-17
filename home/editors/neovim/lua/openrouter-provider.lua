@@ -1,6 +1,6 @@
 -- Custom OpenRouter provider for ThePrimeagen/99
 -- Uses curl via vim.system instead of Nushell.
--- API key is loaded from secrets.lua (gitignored).
+-- API key is loaded from secrets/secrets.lua (symlinked into nvim config, gitignored).
 
 local M = {}
 

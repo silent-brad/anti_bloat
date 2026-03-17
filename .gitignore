@@ -11,8 +11,7 @@ tmp/
 *~
 .*.un~
 
-# Secrets (never commit)
-secrets/
+# Secrets (never commit real values)
+secrets/secrets.nix
 *.age
 *.gpg
-home/editors/neovim/lua/secrets.lua

@@ -39,9 +39,14 @@ window.bar {
 }
 
 .clock,
+.openrouter,
 .network,
 .volume,
 .memory,
 .battery {
   margin-right: 15px;
+}
+
+.openrouter {
+  color: $accent;
 }

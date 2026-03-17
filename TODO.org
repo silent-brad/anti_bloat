@@ -7,8 +7,9 @@
   Use plymouth bootsplash
   Also, add ascii art to the login screen
 * TODO Replace Nu scripting in OpenRouterProvider with Lua
-* TODO Add Git config alias'
+* DONE Add Git config alias'
   In ~home/default.nix~ add uncommitted toml file for Git creds/usernames.
+  → Moved to ~secrets/user.nix~ (gitignored)
 
 * TODO Fix NeoVim errors
   #+BEGIN_SRC

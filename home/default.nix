@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, secrets ? {}, ... }:
 
 {
   imports = [
@@ -14,7 +14,6 @@
     ./desktop/cursor.nix
   ];
 
-  # TODO: put this in config file
   home.username = "redironninja";
   home.homeDirectory = "/home/redironninja";
 
@@ -84,11 +83,10 @@
     createDirectories = true;
   };
 
-  # Git configuration
+  # Git configuration (update values in secrets/secrets.lua)
   programs.git = {
     enable = true;
-    settings.user.name = "silent-brad"; # Set your name
-    # settings.user.email = "your@email.com";  # Set your email
-    settings.user.email = "bradscottwhite@gmail.com";
+    settings.user.name = secrets.git_username or "silent-brad";
+    settings.user.email = secrets.git_email or "bradscottwhite@gmail.com";
   };
 }

@@ -19,11 +19,17 @@
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+
+      secretsPath = ./secrets/secrets.nix;
+      secrets =
+        if builtins.pathExists secretsPath
+        then import secretsPath
+        else {};
     in {
       nixosConfigurations = {
         thinkpad-x220 = nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs secrets; };
           modules = [
             ./hosts/thinkpad-x220
 
@@ -33,7 +39,7 @@
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "bak";
               home-manager.users.redironninja = import ./home;
-              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.extraSpecialArgs = { inherit inputs secrets; };
             }
           ];
         };

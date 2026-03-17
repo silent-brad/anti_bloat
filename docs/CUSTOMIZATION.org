@@ -5,7 +5,7 @@
 
 * Keybindings
 
-Hyprland keybindings are in =home/desktop/hyprland/hyprland.lua=.
+Pinnacle keybindings are in =home/desktop/pinnacle/pinnacle_config.lua=.
 
 ** Adding a Keybinding
 
@@ -103,13 +103,13 @@ end)
 
 ** Color Scheme
 
-Current theme: Rose Pine (across Ghostty, Neovim, Waybar)
+Current theme: Catppuccin Mocha (across Ghostty, Neovim, EWW)
 
 To change:
 
 1. Ghostty: =home/terminal/ghostty.nix= → =theme==
 2. Neovim: =home/editors/neovim/lua/plugins/init.lua= → colorscheme plugin
-3. Waybar: =home/desktop/waybar/style.css= → colors
+3. EWW: =home/desktop/eww/eww.scss= → colors
 
 ** Fonts
 
@@ -122,23 +122,20 @@ fonts.packages = with pkgs; [
 ];
 #+end_src
 
-* Waybar
+* EWW Bar
 
-** Adding a Module
+Configuration lives in =home/desktop/eww/=.
 
-Edit =home/desktop/waybar/default.nix=:
+- =eww.yuck= — widget definitions and layout
+- =eww.scss= — styling (Catppuccin Mocha theme)
+- =scripts/= — polling scripts (memory, volume, network, battery, workspaces, openrouter)
 
-1. Add module name to =modules-left=, =modules-center=, or =modules-right=
-2. Configure the module in settings
+** Adding a Widget
 
-Example custom module:
-
-#+begin_src nix
-"custom/weather" = {
-  exec = "curl -s 'wttr.in?format=1'";
-  interval = 3600;
-};
-#+end_src
+1. Add a =defpoll= variable in =eww.yuck= with a polling script
+2. Add a =defwidget= to display it
+3. Add the widget to the =left=, =center=, or =right= box
+4. Add styling in =eww.scss=
 
 * Wallpapers
 
@@ -152,25 +149,14 @@ Adjust cycle interval in =home/desktop/swww/wallpaper-cycle.sh=:
 INTERVAL=10000  # seconds
 #+end_src
 
-* Window Rules (Hyprland)
+* Window Rules (Pinnacle)
 
-In =home/desktop/hyprland/hyprland.lua=:
+Window rules are configured in =home/desktop/pinnacle/pinnacle_config.lua=:
 
 #+begin_src lua
--- Float a specific app
-hypr.windowrule.add("float", "class:pavucontrol")
-
--- Set opacity
-hypr.windowrule.add("opacity 0.9 0.85", "class:discord")
-
--- Assign to workspace
-hypr.windowrule.add("workspace 3", "class:spotify")
-#+end_src
-
-Find window class:
-
-#+begin_src bash
-hyprctl clients
+Window.add_window_rule(function(window)
+  window:set_decoration_mode("server_side")
+end)
 #+end_src
 
 * Multiple Hosts

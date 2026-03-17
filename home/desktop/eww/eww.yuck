@@ -24,6 +24,10 @@
   :interval "1s"
   `scripts/workspaces`)
 
+(defpoll openrouter
+  :interval "60s"
+  `scripts/openrouter`)
+
 ;; ── Widgets ──────────────────────────────────────────────────────
 
 (defwidget launcher []
@@ -57,6 +61,11 @@
   (box :class "battery"
     battery))
 
+(defwidget openrouter-widget []
+  (box :class "openrouter" :orientation "h" :spacing 4
+    {openrouter == "" ? "󱚣 --" :
+     "󱚣 $${openrouter.remaining} left ($${openrouter.used} used)"}))
+
 ;; ── Bar layout ───────────────────────────────────────────────────
 
 (defwidget left []
@@ -70,6 +79,7 @@
 
 (defwidget right []
   (box :orientation "h" :halign "end" :spacing 15
+    (openrouter-widget)
     (network-widget)
     (volume-widget)
     (memory-widget)

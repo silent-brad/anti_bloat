@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, secrets ? {}, ... }:
 
 {
   imports = [
@@ -16,7 +16,7 @@
     ../../hardware/peripherals/ultrabase.nix
   ];
 
-  networking.hostName = "nixos";
+  networking.hostName = secrets.hostname or "nixos";
 
   boot.loader.grub = {
     enable = true;
