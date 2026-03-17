@@ -62,6 +62,16 @@ return {
         filetype = "org",
       }
 
+      -- Yuck
+      yuck = {
+        install_info = {
+          url = "https://github.com/philipkari/tree-sitter-yuck",
+          files = { "src/parser.c" },
+        },
+        filetype = "yuck",
+      },
+
+
 			ts.install(languages)
 
 			vim.api.nvim_create_autocmd("FileType", {

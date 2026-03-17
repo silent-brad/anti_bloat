@@ -1,10 +1,8 @@
 #+TITLE: TODO List for Anti_Bloat
 
-* TODO Replace Hyprlua with Pinnacle
+* DONE Replace Hyprlua with Pinnacle
   Add transparent windows
-  Add waybar like topbar
-* TODO In devdocs, it references ~/home/../devdocs/~. Move to somewhere else.
-  Git is here: [[https://github.com/freeCodeCamp/devdocs]]
+* TODO Add waybar like topbar but with eww
 * TODO Add new login screen (that is also themed) instead of GDM
   Use plymouth bootsplash
   Also, add ascii art to the login screen

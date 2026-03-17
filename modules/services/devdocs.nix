@@ -1,22 +1,28 @@
 { config, pkgs, lib, ... }:
 
+let
+  docker = "${pkgs.docker}/bin/docker";
+  image = "ghcr.io/freecodecamp/devdocs:latest";
+  startScript = pkgs.writeShellScript "start-devdocs" ''
+    ${docker} pull ${image} || true
+    exec ${docker} run --rm --name devdocs -p 9292:9292 ${image}
+  '';
+in
 {
   systemd.services.devdocs = {
     description = "devdocs";
-    after = [ "network.target" "docker.service" ];
+    after = [ "network-online.target" "docker.service" ];
     requires = [ "docker.service" ];
+    wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "simple";
       Restart = "always";
-      RestartSec = 2;
-      WorkingDirectory = "/home/redironninja/devdocs";
-      ExecStart = pkgs.writeShellScript "start-devdocs" ''
-        #!/bin/sh
-        ${pkgs.docker}/bin/docker build -t devdocs .
-        ${pkgs.docker}/bin/docker rm -f devdocs || true
-        exec ${pkgs.docker}/bin/docker run --name devdocs -p 9292:9292 devdocs
-      '';
+      RestartSec = 5;
+      ExecStart = startScript;
+      ExecStop = "${docker} stop devdocs";
+      TimeoutStartSec = 300;
+      TimeoutStopSec = 10;
     };
   };
 }

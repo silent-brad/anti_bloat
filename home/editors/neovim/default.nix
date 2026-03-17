@@ -25,6 +25,7 @@
     semgrep
     stylelint
     stylelint-lsp
+    vimPlugins.parinfer-rust # For Lisp
     luarocks
     python3
     curl
