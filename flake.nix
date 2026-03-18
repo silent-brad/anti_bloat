@@ -15,18 +15,22 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      ...
+    }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
 
       # secrets.nix is gitignored, so we must read it via absolute path (requires --impure)
       secretsPath = /home/redironninja/anti_bloat/secrets/secrets.nix;
-      secrets =
-        if builtins.pathExists secretsPath
-        then import secretsPath
-        else {};
-    in {
+      secrets = if builtins.pathExists secretsPath then import secretsPath else { };
+    in
+    {
       nixosConfigurations = {
         thinkpad-x220 = nixpkgs.lib.nixosSystem {
           inherit system;

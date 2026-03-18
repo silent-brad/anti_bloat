@@ -1,5 +1,39 @@
-{ config, pkgs, lib, secrets ? {}, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  secrets ? { },
+  ...
+}:
 
+let
+  treesitterParsers = pkgs.symlinkJoin {
+    name = "nvim-treesitter-parsers";
+    paths = with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
+      lua
+      vim
+      vimdoc
+      nix
+      bash
+      nu
+      markdown
+      markdown_inline
+      rust
+      go
+      ocaml
+      html
+      css
+      javascript
+      typescript
+      jinja
+      toml
+      json
+      yaml
+      nim
+      typst
+    ];
+  };
+in
 {
   programs.neovim = {
     enable = true;
@@ -12,11 +46,16 @@
     rust-analyzer
     gopls
     vtsls
+    nodejs
     tailwindcss-language-server
     angular-language-server
+    ocamlPackages.ocaml-lsp
+    ocamlformat
+    nushellPlugins.formats
     nimlangserver
     lua-language-server
     luaformatter
+    nixfmt
     stylua
     luau-lsp
     selene
@@ -33,6 +72,10 @@
   ];
 
   xdg.configFile."nvim/init.lua".source = ./lua/init.lua;
+
+  xdg.configFile."nvim/lua/nix-treesitter-parsers.lua".text = ''
+    vim.opt.runtimepath:prepend("${treesitterParsers}")
+  '';
   xdg.configFile."nvim/lua/lazy-bootstrap.lua".source = ./lua/lazy-bootstrap.lua;
   xdg.configFile."nvim/lua/plugins/init.lua".source = ./lua/plugins/init.lua;
   xdg.configFile."nvim/lua/plugins/lsp.lua".source = ./lua/plugins/lsp.lua;

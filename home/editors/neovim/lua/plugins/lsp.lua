@@ -16,6 +16,10 @@ return {
 
   config = function()
     require("conform").setup({
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_format = "fallback",
+      },
       formatters_by_ft = {
         lua = { "stylua" },
         rust = { "rustfmt" },
@@ -32,6 +36,7 @@ return {
         org = { "prettier" },
         toml = { "prettier" },
         ocaml = { "ocamlformat" },
+        nix = { "nixfmt" },
       },
     })
     local cmp = require("cmp")
@@ -131,6 +136,8 @@ return {
         end,
       },
     })
+
+    vim.lsp.enable("ocamllsp")
 
     local cmp_select = { behavior = cmp.SelectBehavior.Select }
 

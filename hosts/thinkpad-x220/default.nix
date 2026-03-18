@@ -6,8 +6,8 @@
     ../common.nix
     ../../modules/desktop/pinnacle.nix
     ../../modules/desktop/wayland.nix
-    ../../modules/services/audio.nix
-    ../../modules/services/printing.nix
+    ../../hardware/audio.nix
+    ../../hardware/printing.nix
     ../../modules/services/devdocs.nix
     ../../modules/virtualisation.nix
     ../../hardware/profiles/thinkpad-x220.nix

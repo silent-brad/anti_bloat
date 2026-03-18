@@ -29,9 +29,9 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    lazy = false,
-    build = ":TSUpdate",
+    lazy = true,
     config = function()
+      require("nix-treesitter-parsers")
       local ts = require("nvim-treesitter")
       local languages = {
         "lua",
@@ -75,7 +75,6 @@ return {
           },
           filetype = "yuck",
         },
-        --ts.install(languages)
         vim.api.nvim_create_autocmd("FileType", {
           pattern = languages,
           callback = function()

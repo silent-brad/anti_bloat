@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   services.kanshi = {
@@ -8,10 +13,12 @@
     settings = [
       {
         profile.name = "undocked";
-        profile.outputs = [{
-          criteria = "LVDS-1";
-          mode = "1366x768@60Hz";
-        }];
+        profile.outputs = [
+          {
+            criteria = "LVDS-1";
+            mode = "1366x768@60Hz";
+          }
+        ];
       }
       {
         profile.name = "docked";
