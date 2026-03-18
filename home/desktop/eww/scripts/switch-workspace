@@ -1,3 +1,0 @@
-#!/usr/bin/env nu
-# Write active workspace for the eww polling script
-echo $1 | save --force /tmp/eww-active-workspace

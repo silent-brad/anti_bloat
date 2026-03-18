@@ -6,40 +6,40 @@
 
 (defpoll memory
   :interval "5s"
-  `scripts/memory`)
+  `$HOME/.config/eww/scripts/memory`)
 
 (defpoll volume
   :interval "1s"
-  `scripts/volume`)
+  `$HOME/.config/eww/scripts/volume`)
 
 (defpoll network
   :interval "5s"
-  `scripts/network`)
+  `$HOME/.config/eww/scripts/network`)
 
 (defpoll battery
   :interval "10s"
-  `scripts/battery`)
+  `$HOME/.config/eww/scripts/battery`)
 
-(defpoll workspaces
+(defpoll active_ws
   :interval "1s"
-  `scripts/workspaces`)
+  `$HOME/.config/eww/scripts/workspaces`)
 
 (defpoll openrouter
   :interval "60s"
-  `scripts/openrouter`)
+  `$HOME/.config/eww/scripts/openrouter`)
 
 ;; ── Widgets ──────────────────────────────────────────────────────
 
 (defwidget launcher []
-  (box :class "launcher"
-    ""))
+  (box :class "launcher" :hexpand false
+    ""))
 
 (defwidget workspaces-widget []
   (box :class "workspaces" :orientation "h" :spacing 0
-    (for ws in workspaces
-      (button :class {ws.active == true ? "ws-btn ws-active" : "ws-btn"}
-              :onclick "scripts/switch-workspace ${ws.name}"
-        {ws.active == true ? "󱓻" : ws.name}))))
+    (for ws in "[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\",\"0\"]"
+      (button :class {ws == active_ws ? "ws-btn ws-active" : "ws-btn"}
+              :onclick "pinnacle client -e 'local Tag = require(\"pinnacle.tag\"); local t = Tag.get(\"${ws}\"); if t then t:switch_to() end'"
+        {ws == active_ws ? "󱓻" : ws}))))
 
 (defwidget clock []
   (box :class "clock"
@@ -69,7 +69,7 @@
 ;; ── Bar layout ───────────────────────────────────────────────────
 
 (defwidget left []
-  (box :orientation "h" :halign "start" :spacing 0
+  (box :orientation "h" :halign "start" :spacing 0 :space-evenly false
     (launcher)
     (workspaces-widget)))
 
@@ -78,7 +78,7 @@
     (clock)))
 
 (defwidget right []
-  (box :orientation "h" :halign "end" :spacing 15
+  (box :orientation "h" :halign "end" :spacing 15 :space-evenly false
     (openrouter-widget)
     (network-widget)
     (volume-widget)

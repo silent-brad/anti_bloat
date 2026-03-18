@@ -13,6 +13,7 @@ let
     pulseaudio
     procps
     iproute2
+    pinnacle
   ];
   depPath = lib.makeBinPath dependencies;
 in

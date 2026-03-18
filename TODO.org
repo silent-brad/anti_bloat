@@ -3,13 +3,13 @@
 * DONE Replace Hyprlua with Pinnacle
   Add transparent windows
 * DONE Add waybar like topbar but with eww
-* TODO Add new login screen (that is also themed) instead of GDM
-  Use plymouth bootsplash
-  Also, add ascii art to the login screen
-* TODO Replace Nu scripting in OpenRouterProvider with Lua
+* DONE Replace Nu scripting in OpenRouterProvider with Lua
 * DONE Add Git config alias'
   In ~home/default.nix~ add uncommitted toml file for Git creds/usernames.
   → Moved to ~secrets/user.nix~ (gitignored)
+* TODO Add new login screen (that is also themed) instead of GDM
+  Use plymouth bootsplash
+  Also, add ascii art to the login screen
 
 * TODO Fix NeoVim errors
   #+BEGIN_SRC

@@ -62,11 +62,15 @@ function M.build()
 
     local proc = vim.system(
       {
-        "curl", "-sS",
+        "curl",
+        "-sS",
         "https://openrouter.ai/api/v1/chat/completions",
-        "-H", "Authorization: Bearer " .. api_key,
-        "-H", "Content-Type: application/json",
-        "-d", payload,
+        "-H",
+        "Authorization: Bearer " .. api_key,
+        "-H",
+        "Content-Type: application/json",
+        "-d",
+        payload,
       },
       {
         text = true,
@@ -131,7 +135,8 @@ function M.build()
   function OpenRouterProvider.fetch_models(callback)
     vim.system(
       {
-        "curl", "-sS",
+        "curl",
+        "-sS",
         "https://openrouter.ai/api/v1/models",
       },
       { text = true },

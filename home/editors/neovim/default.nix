@@ -39,10 +39,20 @@
   xdg.configFile."nvim/lua/plugins/99.lua".source = ./lua/plugins/99.lua;
   xdg.configFile."nvim/lua/openrouter-provider.lua".source = ./lua/openrouter-provider.lua;
 
-  # Generate secrets.lua from the Nix secrets attrset
-  xdg.configFile."nvim/lua/secrets.lua".text = ''
+  # Generate secrets.lua at activation from secrets.nix (bypasses Nix store caching)
+  home.activation.nvimSecrets = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    secrets_nix="$HOME/anti_bloat/secrets/secrets.nix"
+    out="$HOME/.config/nvim/lua/secrets.lua"
+    if [ -f "$secrets_nix" ]; then
+      key=$(${pkgs.gnugrep}/bin/grep 'openrouter_api_key' "$secrets_nix" | ${pkgs.gnused}/bin/sed 's/.*= *"\(.*\)".*/\1/')
+    else
+      key="YOUR_KEY_HERE"
+    fi
+    mkdir -p "$(dirname "$out")"
+    cat > "$out" << EOF
     return {
-      openrouter_api_key = "${secrets.openrouter_api_key or "YOUR_KEY_HERE"}",
+      openrouter_api_key = "$key",
     }
+    EOF
   '';
 }
