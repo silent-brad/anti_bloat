@@ -8,6 +8,17 @@ local Window = require("pinnacle.window")
 local Layout = require("pinnacle.layout")
 local Snowcap = require("pinnacle.snowcap")
 
+local nix_theme = require("nix-theme")
+local Widget = require("snowcap.widget")
+
+-- Convert hex "#rrggbb" to a Snowcap Color via Widget.color.from_rgba
+local function hex_to_color(hex)
+  local r = tonumber(hex:sub(2, 3), 16) / 255
+  local g = tonumber(hex:sub(4, 5), 16) / 255
+  local b = tonumber(hex:sub(6, 7), 16) / 255
+  return Widget.color.from_rgba(r, g, b)
+end
+
 Pinnacle.setup(function()
   local key = Input.key
 
@@ -353,15 +364,25 @@ Pinnacle.setup(function()
   -- Window decorations and focus borders
   --------------------
   if Snowcap then
+    local focused_color = hex_to_color(nix_theme.accent)
+    local unfocused_color = hex_to_color(nix_theme.surface)
+
+    local function themed_border(win)
+      local border = Snowcap.integration.focus_border(win)
+      border.focused_color = focused_color
+      border.unfocused_color = unfocused_color
+      return border
+    end
+
     -- Add focus borders to already existing windows
     for _, win in ipairs(Window.get_all()) do
-      Snowcap.integration.focus_border(win):decorate()
+      themed_border(win):decorate()
     end
 
     -- Add focus borders to new windows and force server-side decorations (no title bars)
     Window.add_window_rule(function(window)
       window:set_decoration_mode("server_side")
-      Snowcap.integration.focus_border(window):decorate()
+      themed_border(window):decorate()
     end)
   end
 

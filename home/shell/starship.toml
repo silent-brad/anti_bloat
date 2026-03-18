@@ -4,11 +4,11 @@ format = """
 [](overlay)\
 $os\
 $username\
-[](bg:iris fg:overlay)\
+[](bg:secondary fg:overlay)\
 $directory\
-[](fg:iris bg:foam)\
+[](fg:secondary bg:success)\
 $git_branch\
-[](fg:foam bg:pine)\
+[](fg:success bg:info)\
 $c\
 $cpp\
 $rust\
@@ -24,36 +24,36 @@ $java\
 $kotlin\
 $haskell\
 $python\
-[](fg:pine bg:gold)\
-[ ](fg:gold)\
+[](fg:info bg:warning)\
+[ ](fg:warning)\
 $line_break$character"""
 
 palette = "rose-pine"
 
 [palettes.rose-pine]
 overlay = '#26233a'
-love = '#eb6f92'
-gold = '#f6c177'
-rose = '#ebbcba'
-pine = '#31748f'
-foam = '#9ccfd8'
-iris = '#c4a7e7'
+error = '#eb6f92'
+warning = '#f6c177'
+primary = '#ebbcba'
+info = '#31748f'
+success = '#9ccfd8'
+secondary = '#c4a7e7'
 
 [os]
 disabled = false
-style = "bg:overlay fg:iris"
+style = "bg:overlay fg:secondary"
 
 [os.symbols]
 NixOS = ""
 
 [username]
 show_always = true
-style_user = "bg:overlay fg:iris"
-style_root = "bg:overlay fg:iris"
+style_user = "bg:overlay fg:secondary"
+style_root = "bg:overlay fg:secondary"
 format = '[ $user ]($style)'
 
 [directory]
-style = "bg:iris fg:pine"
+style = "bg:secondary fg:info"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
@@ -67,97 +67,97 @@ truncation_symbol = "…/"
 
 [git_branch]
 symbol = ""
-style = "bg:foam"
-format = '[[ $symbol $branch ](fg:iris bg:foam)]($style)'
+style = "bg:success"
+format = '[[ $symbol $branch ](fg:secondary bg:success)]($style)'
 
 #[git_status]
-#style = "bg:foam"
-#format = '[[($all_status$ahead_behind )](fg:iris bg:foam)]($style)'
-#up_to_date = '[ ✓ ](bg:overlay fg:iris)'
-#untracked = '[?\($count\)](bg:overlay fg:gold)'
-#stashed = '[\$](bg:overlay fg:iris)'
-#modified = '[!\($count\)](bg:overlay fg:gold)'
-#renamed = '[»\($count\)](bg:overlay fg:iris)'
+#style = "bg:success"
+#format = '[[($all_status$ahead_behind )](fg:secondary bg:success)]($style)'
+#up_to_date = '[ ✓ ](bg:overlay fg:secondary)'
+#untracked = '[?\($count\)](bg:overlay fg:warning)'
+#stashed = '[\$](bg:overlay fg:secondary)'
+#modified = '[!\($count\)](bg:overlay fg:warning)'
+#renamed = '[»\($count\)](bg:overlay fg:secondary)'
 #deleted = '[✘\($count\)](style)'
-#staged = '[++\($count\)](bg:overlay fg:gold)'
-#ahead = '[⇡\(${count}\)](bg:overlay fg:foam)'
-#diverged = '⇕[\[](bg:overlay fg:iris)[⇡\(${ahead_count}\)](bg:overlay fg:foam)[⇣\(${behind_count}\)](bg:overlay fg:rose)[\]](bg:overlay fg:iris)'
-#behind = '[⇣\(${count}\)](bg:overlay fg:rose)'
+#staged = '[++\($count\)](bg:overlay fg:warning)'
+#ahead = '[⇡\(${count}\)](bg:overlay fg:success)'
+#diverged = '⇕[\[](bg:overlay fg:secondary)[⇡\(${ahead_count}\)](bg:overlay fg:success)[⇣\(${behind_count}\)](bg:overlay fg:primary)[\]](bg:overlay fg:secondary)'
+#behind = '[⇣\(${count}\)](bg:overlay fg:primary)'
 
 [nodejs]
 symbol = ""
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [c]
 symbol = " "
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [cpp]
 symbol = " "
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [rust]
 symbol = ""
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [golang]
 symbol = ""
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [ocaml]
 symbol = ""
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [fennel]
 symbol = ""
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [nim]
 symbol = "󰆥"
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [ruby]
 symbol = ""
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [lua]
 symbol = ""
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [java]
 symbol = ""
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [kotlin]
 symbol = ""
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [haskell]
 symbol = ""
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [python]
 symbol = ""
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [elixir]
 symbol = ""
-style = "bg:rose"
-format = '[[ $symbol( $version) ](fg:rose bg:pine)]($style)'
+style = "bg:primary"
+format = '[[ $symbol( $version) ](fg:primary bg:info)]($style)'
 
 [line_break]
 disabled = true

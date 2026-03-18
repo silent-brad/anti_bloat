@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  theme,
   ...
 }:
 
@@ -9,7 +10,7 @@
   programs.ghostty = {
     enable = true;
     settings = {
-      theme = "Rose Pine";
+      theme = theme.ghostty;
       font-family = "FiraCode Nerd Font";
       font-size = 12;
       shell-integration = "nushell";

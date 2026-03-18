@@ -13,7 +13,8 @@
 * DONE Move Kanshi to hardware
   CLOSED: [2026-03-18 Wed 16:09]
   Also, printing(in ~modules~)
-* TODO Add consistant theme (like Omarchy) on NeoVim, Hyprland, Waybar, Ghostty, Brave.
+* DONE Add consistant theme (like Omarchy)
+  CLOSED: [2026-03-18 Wed 18:39]
 * TODO Make pure (right now it uses ~--impure~)
 * TODO Add new login screen (that is also themed) instead of GDM
   Use plymouth bootsplash

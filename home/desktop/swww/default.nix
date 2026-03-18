@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  theme,
   ...
 }:
 
@@ -9,7 +10,9 @@
   home.packages = [ pkgs.swww ];
 
   home.file.".local/bin/wallpaper-cycle.nu" = {
-    source = ./wallpaper-cycle.nu;
+    source = pkgs.replaceVars ./wallpaper-cycle.nu {
+      themeName = theme.name;
+    };
     executable = true;
   };
 

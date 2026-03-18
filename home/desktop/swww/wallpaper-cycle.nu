@@ -1,6 +1,8 @@
 #!/usr/bin/env nu
 
-let wallpaper_dir = $"($env.HOME)/Pictures/Wallpapers"
+let theme_dir = $"($env.HOME)/Pictures/Wallpapers/@themeName@"
+let fallback_dir = $"($env.HOME)/Pictures/Wallpapers"
+let wallpaper_dir = if ($theme_dir | path exists) { $theme_dir } else { $fallback_dir }
 let interval = 10000sec
 
 swww-daemon &

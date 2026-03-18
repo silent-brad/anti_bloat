@@ -29,6 +29,7 @@
       # secrets.nix is gitignored, so we must read it via absolute path (requires --impure)
       secretsPath = /home/redironninja/anti_bloat/secrets/secrets.nix;
       secrets = if builtins.pathExists secretsPath then import secretsPath else { };
+      theme = import ./themes;
     in
     {
       nixosConfigurations = {
@@ -44,7 +45,7 @@
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "bak";
               home-manager.users.redironninja = import ./home;
-              home-manager.extraSpecialArgs = { inherit inputs secrets; };
+              home-manager.extraSpecialArgs = { inherit inputs secrets theme; };
             }
           ];
         };

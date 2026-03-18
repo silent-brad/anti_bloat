@@ -3,6 +3,7 @@
   pkgs,
   lib,
   secrets ? { },
+  theme,
   ...
 }:
 
@@ -75,6 +76,13 @@ in
 
   xdg.configFile."nvim/lua/nix-treesitter-parsers.lua".text = ''
     vim.opt.runtimepath:prepend("${treesitterParsers}")
+  '';
+  xdg.configFile."nvim/lua/nix-theme.lua".text = ''
+    return {
+      plugin = "${theme.neovim.plugin}",
+      colorscheme = "${theme.neovim.colorscheme}",
+      variant = "${theme.neovim.variant}",
+    }
   '';
   xdg.configFile."nvim/lua/lazy-bootstrap.lua".source = ./lua/lazy-bootstrap.lua;
   xdg.configFile."nvim/lua/plugins/init.lua".source = ./lua/plugins/init.lua;

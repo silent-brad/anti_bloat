@@ -1,19 +1,36 @@
 return {
-  {
-    "rose-pine/neovim",
-    name = "rose-pine",
-    priority = 1000,
-    config = function()
-      require("rose-pine").setup({
-        variant = "main",
-        dark_variant = "main",
-        styles = {
-          transparency = true,
-        },
-      })
-      vim.cmd("colorscheme rose-pine")
-    end,
-  },
+  (function()
+    local theme = require("nix-theme")
+    return {
+      theme.plugin,
+      name = "colorscheme",
+      priority = 1000,
+      config = function()
+        local name = theme.colorscheme:match("([^-]+)")
+        -- Some themes use vim.g options instead of/alongside setup()
+        vim.g[name .. "_transparent_background"] = 2
+        vim.g[name .. "_background"] = theme.variant
+        local ok, mod = pcall(require, name)
+        if ok and type(mod) == "table" and mod.setup then
+          mod.setup({
+            variant = theme.variant,
+            dark_variant = theme.variant,
+            styles = { transparency = true },
+            transparent_background = true,
+          })
+        end
+        local cs_ok, cs_err = pcall(vim.cmd, "colorscheme " .. theme.colorscheme)
+        if not cs_ok then
+          -- Plugin may not be installed yet (first launch after theme switch);
+          -- Lazy will install it, then we retry via lazy-bootstrap.lua
+          vim.notify("Colorscheme not yet available, installing...", vim.log.levels.INFO)
+          return
+        end
+        vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
+        vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
+      end,
+    }
+  end)(),
 
   {
     "nvim-telescope/telescope.nvim",
@@ -74,8 +91,7 @@ return {
             files = { "src/parser.c" },
           },
           filetype = "yuck",
-        },
-        vim.api.nvim_create_autocmd("FileType", {
+        }, vim.api.nvim_create_autocmd("FileType", {
           pattern = languages,
           callback = function()
             vim.treesitter.start()
@@ -113,7 +129,7 @@ return {
     config = function()
       require("lualine").setup({
         options = {
-          theme = "rose-pine",
+          theme = "auto",
         },
       })
     end,
