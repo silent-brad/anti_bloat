@@ -76,11 +76,11 @@
   gtk = {
     enable = true;
     gtk3.extraCss = ''
-      headerbar, .titlebar { min-height: 0; padding: 0; margin: 0; background: ${theme.bg}; }
-      headerbar, .titlebar, .default-decoration { background: ${theme.bg}; box-shadow: none; border: none; min-height: 0; padding: 0; margin: 0; }
+      headerbar, .titlebar { min-height: 0; padding: 0; margin: 0; background: ${theme.background}; }
+      headerbar, .titlebar, .default-decoration { background: ${theme.background}; box-shadow: none; border: none; min-height: 0; padding: 0; margin: 0; }
       window.background headerbar:first-child,
       window.background .titlebar:first-child { min-height: 0; font-size: 0; }
-      .titlebar .title { font-size: 0; color: ${theme.fg}; }
+      .titlebar .title { font-size: 0; color: ${theme.foreground}; }
       .titlebar button { min-height: 0; min-width: 0; padding: 0; margin: 0; }
     '';
   };

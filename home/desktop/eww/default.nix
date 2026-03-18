@@ -28,10 +28,10 @@ in
 
   xdg.configFile."eww/eww.yuck".source = ./eww.yuck;
   xdg.configFile."eww/eww.scss".text = ''
-    $bg:      ${theme.bg};
-    $fg:      ${theme.fg};
+    $bg:      ${theme.background};
+    $fg:      ${theme.foreground};
     $accent:  ${theme.accent};
-    $surface: ${theme.surface};
+    $surface: ${theme.selection_background};
   '' + (let
     raw = builtins.readFile ./eww.scss;
     lines = lib.splitString "\n" raw;

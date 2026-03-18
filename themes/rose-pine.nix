@@ -1,25 +1,31 @@
 {
   name = "rose-pine";
-  # Neovim colorscheme name + plugin
   neovim = {
     plugin = "rose-pine/neovim";
     colorscheme = "rose-pine";
     variant = "main";
   };
-  # Ghostty theme name
   ghostty = "Rose Pine";
-  # Colors for Eww, Rofi, GTK
-  bg = "#191724";
-  fg = "#e0def4";
   accent = "#c4a7e7";
-  surface = "#1f1d2e";
-  overlay = "#26233a";
-  muted = "#6e6a86";
-  subtle = "#908caa";
-  primary = "#ebbcba";
-  warning = "#f6c177";
-  secondary = "#c4a7e7";
-  error = "#eb6f92";
-  info = "#31748f";
-  success = "#9ccfd8";
+  cursor = "#e0def4";
+  foreground = "#e0def4";
+  background = "#191724";
+  selection_foreground = "#191724";
+  selection_background = "#e0def4";
+  color0 = "#26233a";
+  color1 = "#eb6f92";
+  color2 = "#9ccfd8";
+  color3 = "#f6c177";
+  color4 = "#31748f";
+  color5 = "#c4a7e7";
+  color6 = "#ebbcba";
+  color7 = "#e0def4";
+  color8 = "#6e6a86";
+  color9 = "#eb6f92";
+  color10 = "#9ccfd8";
+  color11 = "#f6c177";
+  color12 = "#31748f";
+  color13 = "#c4a7e7";
+  color14 = "#ebbcba";
+  color15 = "#e0def4";
 }

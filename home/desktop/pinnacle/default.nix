@@ -27,7 +27,7 @@
   xdg.configFile."pinnacle/pinnacle_config.lua".text =
     builtins.replaceStrings
       [ ''local nix_theme = require("nix-theme")'' ]
-      [ ''local nix_theme = { accent = "${theme.accent}", bg = "${theme.bg}", surface = "${theme.surface}" }'' ]
+      [ ''local nix_theme = { accent = "${theme.accent}", bg = "${theme.background}", surface = "${theme.selection_background}" }'' ]
       (builtins.readFile ./pinnacle_config.lua);
 
   # Symlink the Snowcap Lua module into the config dir so require("snowcap") resolves

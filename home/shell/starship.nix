@@ -17,13 +17,13 @@ in
       palette = theme.name;
       palettes = {
         ${theme.name} = {
-          overlay = theme.overlay;
-          error = theme.error;
-          warning = theme.warning;
-          primary = theme.primary;
-          info = theme.info;
-          success = theme.success;
-          secondary = theme.secondary;
+          overlay = theme.color0;
+          error = theme.color1;
+          warning = theme.color3;
+          primary = theme.color1;
+          info = theme.color4;
+          success = theme.color6;
+          secondary = theme.color5;
         };
       };
     };

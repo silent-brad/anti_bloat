@@ -19,12 +19,12 @@
       inherit (config.lib.formats.rasi) mkLiteral;
     in {
       "*" = {
-        bg = mkLiteral theme.bg;
-        fg = mkLiteral theme.fg;
+        bg = mkLiteral theme.background;
+        fg = mkLiteral theme.foreground;
         accent = mkLiteral theme.accent;
-        surface = mkLiteral theme.surface;
-        background-color = mkLiteral theme.bg;
-        text-color = mkLiteral theme.fg;
+        surface = mkLiteral theme.selection_background;
+        background-color = mkLiteral theme.background;
+        text-color = mkLiteral theme.foreground;
       };
       window = {
         width = mkLiteral "40%";
@@ -34,7 +34,7 @@
       };
       inputbar = {
         padding = mkLiteral "8px";
-        background-color = mkLiteral theme.surface;
+        background-color = mkLiteral theme.selection_background;
       };
       prompt = {
         text-color = mkLiteral theme.accent;
@@ -52,7 +52,7 @@
       };
       "element selected" = {
         background-color = mkLiteral theme.accent;
-        text-color = mkLiteral theme.bg;
+        text-color = mkLiteral theme.background;
       };
     };
   };
