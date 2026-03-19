@@ -81,7 +81,7 @@ in
   xdg.configFile."nvim/init.lua".source = ./lua/init.lua;
 
   xdg.configFile."nvim/lua/nix-treesitter-parsers.lua".text = ''
-    vim.opt.runtimepath:prepend("${treesitterParsers}")
+    return "${treesitterParsers}"
   '';
   xdg.configFile."nvim/lua/nix-theme.lua".text = ''
     return {

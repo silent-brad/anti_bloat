@@ -11,9 +11,17 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local treesitter_parsers = dofile(vim.fn.stdpath("config") .. "/lua/nix-treesitter-parsers.lua")
+local treesitter_queries = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter/runtime"
+
 require("lazy").setup("plugins", {
   install = { missing = true },
   checker = { enabled = false },
+  performance = {
+    rtp = {
+      paths = { treesitter_parsers, treesitter_queries },
+    },
+  },
 })
 
 -- Synchronously install any missing plugins (e.g. after a theme switch)

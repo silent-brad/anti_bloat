@@ -48,7 +48,6 @@ return {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPost", "BufNewFile" },
     config = function()
-      require("nix-treesitter-parsers")
       local ts = require("nvim-treesitter")
       local languages = {
         "lua",
@@ -62,6 +61,11 @@ return {
         "rust",
         "go",
         "ocaml",
+        "ocaml.interface",
+        "ocaml.menhir",
+        "ocaml.ocamllex",
+        "ocaml.mlx",
+        "ocaml.cram",
         "html",
         "css",
         "javascript",
@@ -209,6 +213,21 @@ return {
     "supermaven-inc/supermaven-nvim",
     config = function()
       require("supermaven-nvim").setup({})
+    end,
+  },
+
+  {
+    "tjdevries/ocaml.nvim",
+    ft = { "ocaml", "ocaml.interface", "ocaml.menhir", "ocaml.ocamllex", "ocaml.mlx", "ocaml.cram" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("ocaml").setup({
+        install_mlx = false,
+        setup_lspconfig = false,
+        setup_conform = false,
+      })
     end,
   },
 }
