@@ -38,8 +38,11 @@ if ($total == null or $used == null) {
 
 let remaining = $total - $used
 
+let pct = if $total > 0 { ($remaining / $total * 100 | math round -p 0 | into int) } else { 0 }
+
 {
   credits: ($total | math round -p 2 | into string),
   used: ($used | math round -p 2 | into string),
-  remaining: ($remaining | math round -p 2 | into string)
+  remaining: ($remaining | math round -p 2 | into string),
+  pct: ($pct | into string)
 } | to json -r | print

@@ -11,7 +11,7 @@ if $eth_up {
 let nets = (sys net)
 let wifi = ($nets | where name =~ "wl" | first | default null)
 if ($wifi == null) {
-  print "󰖪 0%"
+  print "󰤭 0%"
   exit 0
 }
 
@@ -28,10 +28,21 @@ let signal = try {
 } catch { null }
 
 if ($signal == null) {
-  print "  ?"
+  print "󰤯 ?"
   exit 0
 }
 
 # Convert dBm to percentage (-90 to -30 range)
 let pct = [([($signal + 90) * 100 / 60 100] | math min) 0] | math max
-print $"  ($pct)%"
+
+let icon = if $pct >= 75 {
+  "󰤨"
+} else if $pct >= 50 {
+  "󰤥"
+} else if $pct >= 25 {
+  "󰤢"
+} else {
+  "󰤟"
+}
+
+print $"($icon) ($pct)%"

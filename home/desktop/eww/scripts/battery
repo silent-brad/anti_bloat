@@ -9,8 +9,8 @@ if not ($bat_path | path exists) {
 let cap = (try { open $"($bat_path)/capacity" | str trim | into int } catch { 0 })
 let status = (try { open $"($bat_path)/status" | str trim } catch { "Unknown" })
 
-if $status == "Charging" {
-    print $"  ($cap)%"
+if $status == "Charging" or $status == "Not charging" or $status == "Full" {
+    print $"󰂄 ($cap)%"
 } else if $cap <= 15 {
     print $"  ($cap)%"
 } else if $cap <= 30 {

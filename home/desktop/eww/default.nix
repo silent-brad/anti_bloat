@@ -32,17 +32,7 @@ in
     $fg:      ${theme.foreground};
     $accent:  ${theme.accent};
     $surface: ${theme.selection_background};
-  '' + (let
-    raw = builtins.readFile ./eww.scss;
-    lines = lib.splitString "\n" raw;
-    filtered = builtins.filter (l:
-      !(lib.hasPrefix "$bg:" l
-        || lib.hasPrefix "$fg:" l
-        || lib.hasPrefix "$accent:" l
-        || lib.hasPrefix "$surface:" l
-        || lib.hasPrefix "// Catppuccin" l))
-      lines;
-  in lib.concatStringsSep "\n" filtered);
+  '' + builtins.readFile ./eww.scss);
   xdg.configFile."eww/scripts" = {
     source = ./scripts;
     recursive = true;

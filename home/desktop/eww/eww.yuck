@@ -2,7 +2,7 @@
 
 (defpoll time
   :interval "30s"
-  `date "+%a, %b %d    %I:%M %p"`)
+  `date "+%a, %b %d    %-I:%M %p"`)
 
 (defpoll memory
   :interval "5s"
@@ -64,7 +64,8 @@
 (defwidget openrouter-widget []
   (box :class "openrouter" :orientation "h" :spacing 4
     {openrouter == "" ? "󱚣 --" :
-     "󱚣 ${openrouter.remaining} left (${openrouter.used} used)"}))
+     "󱚣 ${openrouter.pct}% [$${openrouter.remaining}]"}))
+     ;;"󱚣 ${openrouter.pct}% [$${openrouter.remaining}/$${openrouter.used}]"}))
 
 ;; ── Bar layout ───────────────────────────────────────────────────
 

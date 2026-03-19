@@ -15,10 +15,14 @@
   Also, printing(in ~modules~)
 * DONE Add consistant theme (like Omarchy)
   CLOSED: [2026-03-18 Wed 18:39]
+* DONE Revise eww bar
+  CLOSED: [2026-03-18 Wed]
+  Time displays "08:50 PM"
+  Battery doesn't show when charging
 * TODO Make pure (right now it uses ~--impure~)
 * TODO Add new login screen (that is also themed) instead of GDM
   Use plymouth bootsplash
-  Also, add ascii art to the login screen
+  Also, add ascii art to the login screen ("ANTI BLOAT")
 
 * TODO Add more skills to 99
 
