@@ -10,7 +10,7 @@
 let
   treesitterParsers = pkgs.symlinkJoin {
     name = "nvim-treesitter-parsers";
-    paths = with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
+    paths = (with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
       lua
       vim
       vimdoc
@@ -32,7 +32,9 @@ let
       yaml
       nim
       typst
-    ];
+    ]) ++ (with pkgs.vimPlugins.nvim-treesitter.queries; [
+      nu
+    ]);
   };
 in
 {

@@ -46,7 +46,7 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    lazy = true,
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require("nix-treesitter-parsers")
       local ts = require("nvim-treesitter")
