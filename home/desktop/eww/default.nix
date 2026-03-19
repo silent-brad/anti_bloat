@@ -32,7 +32,8 @@ in
     $fg:      ${theme.foreground};
     $accent:  ${theme.accent};
     $surface: ${theme.selection_background};
-  '' + builtins.readFile ./eww.scss);
+  ''
+  + builtins.readFile ./eww.scss;
   xdg.configFile."eww/scripts" = {
     source = ./scripts;
     recursive = true;

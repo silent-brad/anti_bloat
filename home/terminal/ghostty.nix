@@ -17,6 +17,9 @@
       command = "nu";
       window-decoration = false;
       background-opacity = 0.85;
+      gtk-custom-css = "${config.xdg.configHome}/ghostty/custom.css";
     };
   };
+
+  xdg.configFile."ghostty/custom.css".source = ./ghostty-custom.css;
 }

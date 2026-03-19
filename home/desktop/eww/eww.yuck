@@ -2,7 +2,7 @@
 
 (defpoll time
   :interval "30s"
-  `date "+%a, %b %d    %-I:%M %p"`)
+  `date "+%a, %b %d %-I:%M %p"`)
 
 (defpoll memory
   :interval "5s"
