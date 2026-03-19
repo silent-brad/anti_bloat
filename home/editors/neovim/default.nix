@@ -10,31 +10,33 @@
 let
   treesitterParsers = pkgs.symlinkJoin {
     name = "nvim-treesitter-parsers";
-    paths = (with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
-      lua
-      vim
-      vimdoc
-      nix
-      bash
-      nu
-      markdown
-      markdown_inline
-      rust
-      go
-      ocaml
-      html
-      css
-      javascript
-      typescript
-      jinja
-      toml
-      json
-      yaml
-      nim
-      typst
-    ]) ++ (with pkgs.vimPlugins.nvim-treesitter.queries; [
-      nu
-    ]);
+    paths =
+      (with pkgs.vimPlugins.nvim-treesitter.grammarPlugins; [
+        lua
+        vim
+        vimdoc
+        nix
+        bash
+        nu
+        markdown
+        markdown_inline
+        rust
+        go
+        ocaml
+        html
+        css
+        javascript
+        typescript
+        jinja
+        toml
+        json
+        yaml
+        nim
+        typst
+      ])
+      ++ (with pkgs.vimPlugins.nvim-treesitter.queries; [
+        nu
+      ]);
   };
 in
 {
@@ -72,6 +74,8 @@ in
     python3
     curl
     jq
+    gcc
+    pkg-config
   ];
 
   xdg.configFile."nvim/init.lua".source = ./lua/init.lua;
@@ -89,8 +93,23 @@ in
   xdg.configFile."nvim/lua/lazy-bootstrap.lua".source = ./lua/lazy-bootstrap.lua;
   xdg.configFile."nvim/lua/plugins/init.lua".source = ./lua/plugins/init.lua;
   xdg.configFile."nvim/lua/plugins/lsp.lua".source = ./lua/plugins/lsp.lua;
+  xdg.configFile."nvim/lua/plugins/fff.lua".source = ./lua/plugins/fff.lua;
   xdg.configFile."nvim/lua/plugins/99.lua".source = ./lua/plugins/99.lua;
   xdg.configFile."nvim/lua/openrouter-provider.lua".source = ./lua/openrouter-provider.lua;
+
+  # Clone (if needed) and build fff.nvim rust binary
+  home.activation.fffNvimBuild = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    fff_dir="$HOME/.local/share/nvim/lazy/fff.nvim"
+    if [ ! -d "$fff_dir" ]; then
+      echo "Cloning fff.nvim..."
+      ${pkgs.git}/bin/git clone --filter=blob:none https://github.com/dmtrKovalenko/fff.nvim.git "$fff_dir"
+    fi
+    target="$fff_dir/target/release"
+    if [ ! -f "$target/libfff_nvim.so" ]; then
+      echo "Building fff.nvim rust backend..."
+      cd "$fff_dir" && ${pkgs.nix}/bin/nix run "path:.#release" --extra-experimental-features "nix-command flakes" 2>&1 || true
+    fi
+  '';
 
   # Generate secrets.lua at activation from secrets.nix (bypasses Nix store caching)
   home.activation.nvimSecrets = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

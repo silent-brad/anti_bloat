@@ -32,17 +32,17 @@ return {
     }
   end)(),
 
-  {
-    "nvim-telescope/telescope.nvim",
-    branch = "master",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    keys = {
-      { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
-      { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
-      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-      { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
-    },
-  },
+  -- {
+  --   "nvim-telescope/telescope.nvim",
+  --   branch = "master",
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   keys = {
+  --     { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
+  --     { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
+  --     { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+  --     { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
+  --   },
+  -- },
 
   {
     "nvim-treesitter/nvim-treesitter",
@@ -156,6 +156,28 @@ return {
       -- Experimental LSP support
       vim.lsp.enable("org")
     end,
+  },
+
+  {
+    "NeogitOrg/neogit",
+    lazy = true,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+
+      -- Only one of these is needed.
+      "sindrets/diffview.nvim",
+      --"esmuellert/codediff.nvim",
+
+      -- Only one of these is needed.
+      "nvim-telescope/telescope.nvim",
+      --"ibhagwan/fzf-lua",
+      --"nvim-mini/mini.pick",
+      --"folke/snacks.nvim",
+    },
+    cmd = "Neogit",
+    keys = {
+      { "<leader>gg", "<cmd>Neogit<cr>", desc = "Show Neogit UI" },
+    },
   },
 
   {

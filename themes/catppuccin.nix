@@ -5,7 +5,7 @@
     colorscheme = "catppuccin-mocha";
     variant = "mocha";
   };
-  ghostty = "catppuccin-mocha";
+  ghostty = "Catppuccin Mocha";
   accent = "#89b4fa";
   cursor = "#f5e0dc";
   foreground = "#cdd6f4";
