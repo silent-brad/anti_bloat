@@ -58,6 +58,7 @@ in
     ocamlPackages.reason
     ocamlformat
     nushellPlugins.formats
+    nim
     nimlangserver
     lua-language-server
     luaformatter
