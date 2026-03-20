@@ -113,7 +113,10 @@ function M.build()
 
         local content = ""
         if decoded.choices and decoded.choices[1] and decoded.choices[1].message then
-          content = decoded.choices[1].message.content or ""
+          local c = decoded.choices[1].message.content
+          if c ~= nil and c ~= vim.NIL then
+            content = c
+          end
         end
 
         if content == "" then
