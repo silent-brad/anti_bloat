@@ -139,6 +139,7 @@ return {
     })
 
     vim.lsp.enable("ocamllsp")
+    vim.lsp.enable("jinja_lsp")
 
     local cmp_select = { behavior = cmp.SelectBehavior.Select }
 

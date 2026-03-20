@@ -70,6 +70,7 @@ in
     semgrep
     stylelint
     stylelint-lsp
+    jinja-lsp
     vimPlugins.parinfer-rust # For Lisp
     luarocks
     python3
