@@ -58,6 +58,11 @@ function M.build()
       },
     })
 
+    local payload_file = os.tmpname()
+    local pf = io.open(payload_file, "w")
+    pf:write(payload)
+    pf:close()
+
     local accumulated = {}
 
     local proc = vim.system(
@@ -70,7 +75,7 @@ function M.build()
         "-H",
         "Content-Type: application/json",
         "-d",
-        payload,
+        "@" .. payload_file,
       },
       {
         text = true,
@@ -88,6 +93,7 @@ function M.build()
         end),
       },
       vim.schedule_wrap(function(obj)
+        os.remove(payload_file)
         if context:is_cancelled() then
           observer.on_complete("cancelled", "")
           return
