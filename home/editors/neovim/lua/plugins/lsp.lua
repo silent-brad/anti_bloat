@@ -54,8 +54,6 @@ return {
         "vtsls",
         "tailwindcss",
         "angularls",
-        "nim_langserver",
-
         -- Lua
         "lua_ls",
         --"emmylua-codeformat",
@@ -140,6 +138,13 @@ return {
 
     vim.lsp.enable("ocamllsp")
     vim.lsp.enable("jinja_lsp")
+
+    vim.lsp.config("nim_langserver", {
+      cmd = { "nimlangserver" },
+      filetypes = { "nim" },
+      root_markers = { "*.nimble", ".git" },
+    })
+    vim.lsp.enable("nim_langserver")
 
     local cmp_select = { behavior = cmp.SelectBehavior.Select }
 

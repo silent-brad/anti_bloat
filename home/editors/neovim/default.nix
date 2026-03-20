@@ -59,6 +59,7 @@ in
     ocamlformat
     nushellPlugins.formats
     nim
+    nimble
     nimlangserver
     lua-language-server
     luaformatter
@@ -110,7 +111,7 @@ in
     target="$fff_dir/target/release"
     if [ ! -f "$target/libfff_nvim.so" ]; then
       echo "Building fff.nvim rust backend..."
-      cd "$fff_dir" && ${pkgs.nix}/bin/nix run "path:.#release" --extra-experimental-features "nix-command flakes" 2>&1 || true
+      cd "$fff_dir" && ${pkgs.cargo}/bin/cargo build --release -p fff-nvim 2>&1 || true
     fi
   '';
 
