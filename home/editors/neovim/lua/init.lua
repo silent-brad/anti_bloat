@@ -19,4 +19,11 @@ opt.undofile = true
 opt.splitright = true
 opt.splitbelow = true
 
+vim.filetype.add({
+  extension = {
+    re = "reason",
+    rei = "reason",
+  },
+})
+
 require("lazy-bootstrap")

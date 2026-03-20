@@ -102,6 +102,14 @@ return {
             vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
           end,
         })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "reason" },
+        callback = function()
+          vim.treesitter.start(nil, "ocaml")
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
+      })
     end,
   },
 

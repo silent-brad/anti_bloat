@@ -55,6 +55,7 @@ in
     tailwindcss-language-server
     angular-language-server
     ocamlPackages.ocaml-lsp
+    ocamlPackages.reason
     ocamlformat
     nushellPlugins.formats
     nimlangserver

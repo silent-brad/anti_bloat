@@ -36,6 +36,7 @@ return {
         org = { "prettier" },
         toml = { "prettier" },
         ocaml = { "ocamlformat" },
+        reason = { "refmt" },
         nix = { "nixfmt" },
       },
     })
