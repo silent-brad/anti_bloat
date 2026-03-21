@@ -1,4 +1,10 @@
-{ config, pkgs, inputs, secrets ? {}, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  secrets ? { },
+  ...
+}:
 
 {
   imports = [
@@ -30,7 +36,13 @@
 
   users.users.redironninja = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" "libvirtd" "dialout" "plugdev" ];
+    extraGroups = [
+      "wheel"
+      "docker"
+      "libvirtd"
+      "dialout"
+      "plugdev"
+    ];
     packages = with pkgs; [ tree ];
   };
 

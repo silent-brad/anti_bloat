@@ -1,13 +1,20 @@
 { config, pkgs, ... }:
 
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   time.timeZone = "America/New_York";
 
   i18n.defaultLocale = "en_US.UTF-8";
 
-  networking.networkmanager.enable = true;
+  networking.wireless.iwd.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    wifi.backend = "iwd";
+  };
 
   nixpkgs.config.allowUnfree = true;
 
@@ -51,6 +58,7 @@
     inotify-tools
     rsync
     pandoc
+    impala
 
     nix-prefetch-github
     prefetch-npm-deps
