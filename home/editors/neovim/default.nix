@@ -76,6 +76,7 @@ in
     vimPlugins.parinfer-rust # For Lisp
     luarocks
     python3
+    chafa
     curl
     jq
     gcc
