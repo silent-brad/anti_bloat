@@ -76,6 +76,8 @@ in
     vimPlugins.parinfer-rust # For Lisp
     luarocks
     python3
+    tdf
+    poppler-utils
     chafa
     curl
     jq
@@ -100,6 +102,7 @@ in
   xdg.configFile."nvim/lua/plugins/lsp.lua".source = ./lua/plugins/lsp.lua;
   xdg.configFile."nvim/lua/plugins/fff.lua".source = ./lua/plugins/fff.lua;
   xdg.configFile."nvim/lua/plugins/99.lua".source = ./lua/plugins/99.lua;
+  xdg.configFile."nvim/lua/typst-preview.lua".source = ./lua/typst-preview.lua;
   xdg.configFile."nvim/lua/openrouter-provider.lua".source = ./lua/openrouter-provider.lua;
 
   # Clone (if needed) and build fff.nvim rust binary

@@ -47,11 +47,6 @@ Pinnacle.setup(function()
   --------------------
   local tag_names = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" }
 
-  Output.for_each_output(function(output)
-    local tags = Tag.add(output, tag_names)
-    tags[1]:set_active(true)
-  end)
-
   --------------------
   -- Layout (dwindle first, matching Hyprland)
   --------------------
@@ -73,6 +68,12 @@ Pinnacle.setup(function()
       root_node = layout_cycler:layout(args.window_count),
       tree_id = layout_cycler:current_tree_id(),
     }
+  end)
+
+  Output.for_each_output(function(output)
+    local tags = Tag.add(output, tag_names)
+    tags[1]:set_active(true)
+    layout_requester:request_layout(output)
   end)
 
   -- Cycle layout forward

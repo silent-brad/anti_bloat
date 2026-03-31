@@ -24,6 +24,15 @@
 
   networking.hostName = secrets.hostname or "nixos";
 
+  hardware.enableRedistributableFirmware = true;
+  networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.powersave = false;
+
+  boot.kernelParams = [
+    "iwlwifi.power_save=0"
+    "iwlwifi.uapsd_disable=1"
+  ];
+
   boot.loader.grub = {
     enable = true;
     efiSupport = false;

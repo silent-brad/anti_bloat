@@ -62,7 +62,6 @@
     typer
     kjv
     so
-    hn-text
     ddgr
     dex
 

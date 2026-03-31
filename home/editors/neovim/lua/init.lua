@@ -27,3 +27,4 @@ vim.filetype.add({
 })
 
 require("lazy-bootstrap")
+require("typst-preview").setup()
