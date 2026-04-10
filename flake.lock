@@ -102,7 +102,8 @@
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "pinnacle": "pinnacle"
+        "pinnacle": "pinnacle",
+        "thorium": "thorium"
       }
     },
     "rust-analyzer-src": {
@@ -134,6 +135,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "thorium": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775098682,
+        "narHash": "sha256-jpzRdZjA1zYsM7Fwkid+Gyv4wWvI6p7M1ROqjj1XI3E=",
+        "owner": "Rishabh5321",
+        "repo": "thorium_flake",
+        "rev": "4d3013e4a89d187bc9619ca374531562531564e8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rishabh5321",
+        "repo": "thorium_flake",
         "type": "github"
       }
     }

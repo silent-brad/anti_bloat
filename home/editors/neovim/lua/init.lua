@@ -19,10 +19,19 @@ opt.undofile = true
 opt.splitright = true
 opt.splitbelow = true
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "typst", "org" },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+  end,
+})
+
 vim.filetype.add({
   extension = {
     re = "reason",
     rei = "reason",
+    jade = "jade",
   },
 })
 

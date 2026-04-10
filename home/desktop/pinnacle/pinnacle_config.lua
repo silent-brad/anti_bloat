@@ -148,6 +148,33 @@ Pinnacle.setup(function()
   end)
 
   --------------------
+  -- Screenshot & Recording
+  --------------------
+  -- Print = screenshot region -> satty for annotation
+  Input.keybind({}, key.Print, function()
+    Process.command({
+      shell_cmd = { "sh", "-c" },
+      cmd = { 'grim -g "$(slurp)" - | satty -f -' },
+    }):spawn()
+  end)
+  -- Super+Print = screenshot full screen -> ~/Pictures/Screenshots/
+  Input.keybind({ "super" }, key.Print, function()
+    Process.command({
+      shell_cmd = { "sh", "-c" },
+      cmd = { 'mkdir -p ~/Pictures/Screenshots && grim ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png' },
+    }):spawn()
+  end)
+  -- Super+Shift+R = toggle screen recording
+  Input.keybind({ "super", "shift" }, "r", function()
+    Process.command({
+      shell_cmd = { "sh", "-c" },
+      cmd = {
+        'if pgrep -x wf-recorder > /dev/null; then pkill -INT wf-recorder; else mkdir -p ~/Videos/Recordings && wf-recorder -g "$(slurp)" -f ~/Videos/Recordings/$(date +%Y%m%d_%H%M%S).mp4; fi',
+      },
+    }):spawn()
+  end)
+
+  --------------------
   -- Window management
   --------------------
   Input.keybind({ "super" }, "q", function()

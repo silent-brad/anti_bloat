@@ -8,6 +8,27 @@
 }:
 
 let
+  nimfmt = pkgs.stdenv.mkDerivation {
+    pname = "nimfmt";
+    version = "0.2.0";
+    src = pkgs.fetchFromGitHub {
+      owner = "FedericoCeratto";
+      repo = "nimfmt";
+      rev = "0.2.0";
+      hash = "sha256-AFh5ZQcusdAR7VCd/Uj3QB0eUiFNI8tVMkAyxUDGePU=";
+    };
+    nativeBuildInputs = [ pkgs.nim ];
+    buildPhase = ''
+      export HOME=$TMPDIR
+      nim c -d:nimpretty -d:release --hints:off \
+        -p:${pkgs.nim.passthru.nim}/nim nimfmt.nim
+    '';
+    installPhase = ''
+      mkdir -p $out/bin
+      cp nimfmt $out/bin/
+    '';
+  };
+
   treesitterParsers = pkgs.symlinkJoin {
     name = "nvim-treesitter-parsers";
     paths =
@@ -33,6 +54,8 @@ let
         yaml
         nim
         typst
+        java
+        pug
       ])
       ++ (with pkgs.vimPlugins.nvim-treesitter.queries; [
         nu
@@ -52,6 +75,7 @@ in
     gopls
     vtsls
     nodejs
+    nodePackages.prettier
     tailwindcss-language-server
     angular-language-server
     ocamlPackages.ocaml-lsp
@@ -61,6 +85,7 @@ in
     nim
     nimble
     nimlangserver
+    nimfmt
     lua-language-server
     luaformatter
     nixfmt
@@ -72,9 +97,13 @@ in
     semgrep
     stylelint
     stylelint-lsp
+    jdt-language-server
+    google-java-format
+    checkstyle
     jinja-lsp
     vimPlugins.parinfer-rust # For Lisp
     luarocks
+    lua
     python3
     tdf
     poppler-utils
@@ -97,6 +126,7 @@ in
       variant = "${theme.neovim.variant}",
     }
   '';
+  xdg.configFile."nvim/lua/nim-snake-case.lua".source = ./lua/nim-snake-case.lua;
   xdg.configFile."nvim/lua/lazy-bootstrap.lua".source = ./lua/lazy-bootstrap.lua;
   xdg.configFile."nvim/lua/plugins/init.lua".source = ./lua/plugins/init.lua;
   xdg.configFile."nvim/lua/plugins/lsp.lua".source = ./lua/plugins/lsp.lua;

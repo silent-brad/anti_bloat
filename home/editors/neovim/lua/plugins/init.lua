@@ -76,6 +76,8 @@ return {
         "yaml",
         "nim",
         "typst",
+        "java",
+        "pug",
       }
       -- Org mode
       org = {
@@ -107,6 +109,14 @@ return {
         pattern = { "reason" },
         callback = function()
           vim.treesitter.start(nil, "ocaml")
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "jade" },
+        callback = function()
+          vim.treesitter.start(nil, "pug")
           vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
       })

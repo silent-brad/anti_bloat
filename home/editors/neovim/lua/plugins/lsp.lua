@@ -16,10 +16,16 @@ return {
 
   config = function()
     require("conform").setup({
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_format = "fallback",
-      },
+      format_on_save = function(bufnr)
+        local timeout = 500
+        if vim.bo[bufnr].filetype == "java" then
+          timeout = 10000
+        end
+        return {
+          timeout_ms = timeout,
+          lsp_format = "fallback",
+        }
+      end,
       formatters_by_ft = {
         lua = { "stylua" },
         rust = { "rustfmt" },
@@ -38,6 +44,22 @@ return {
         ocaml = { "ocamlformat" },
         reason = { "refmt" },
         nix = { "nixfmt" },
+        nim = { "nim_snake_case", "nimfmt" },
+        java = { "google-java-format" },
+        pug = { "prettier" },
+        jade = { "prettier" },
+      },
+      formatters = {
+        nimfmt = {
+          args = { "$FILENAME" },
+          stdin = false,
+          cwd = require("conform.util").root_file({ ".nimfmt.cfg" }),
+        },
+        nim_snake_case = {
+          command = "lua",
+          args = { vim.fn.stdpath("config") .. "/lua/nim-snake-case.lua" },
+          stdin = true,
+        },
       },
     })
     local cmp = require("cmp")
@@ -138,6 +160,13 @@ return {
 
     vim.lsp.enable("ocamllsp")
     vim.lsp.enable("jinja_lsp")
+
+    vim.lsp.config("jdtls", {
+      cmd = { "jdtls" },
+      filetypes = { "java" },
+      root_markers = { "build.gradle", "pom.xml", ".git" },
+    })
+    vim.lsp.enable("jdtls")
 
     vim.lsp.config("nim_langserver", {
       cmd = { "nimlangserver" },

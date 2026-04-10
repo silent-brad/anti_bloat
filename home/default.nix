@@ -32,6 +32,7 @@
   home.packages = with pkgs; [
     # Desktop apps
     brave
+    inputs.thorium.packages.x86_64-linux.thorium-avx
     krita
     obsidian
     protonmail-desktop
@@ -41,6 +42,12 @@
     calibre
     thunar
     feh
+
+    # Screenshot & Recording
+    grim
+    slurp
+    satty
+    wf-recorder
 
     # Media
     yewtube

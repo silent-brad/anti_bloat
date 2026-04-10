@@ -13,6 +13,11 @@
       url = "github:pinnacle-comp/pinnacle";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    thorium = {
+      url = "github:Rishabh5321/thorium_flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
