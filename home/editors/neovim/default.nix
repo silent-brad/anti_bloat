@@ -145,8 +145,11 @@ in
       ${pkgs.git}/bin/git clone --filter=blob:none https://github.com/dmtrKovalenko/fff.nvim.git "$fff_dir"
     fi
     target="$fff_dir/target/release"
-    if [ ! -f "$target/libfff_nvim.so" ]; then
+    if [ ! -f "$target/libfff_nvim.so" ] && [ ! -f "$target/libfff_nvim.dylib" ]; then
       echo "Building fff.nvim rust backend..."
+      export PATH="${pkgs.stdenv.cc}/bin:${pkgs.rustc}/bin:$PATH"
+      export NIX_LDFLAGS="-L${pkgs.libiconv}/lib ''${NIX_LDFLAGS:-}"
+      export LIBRARY_PATH="${pkgs.libiconv}/lib:''${LIBRARY_PATH:-}"
       cd "$fff_dir" && ${pkgs.cargo}/bin/cargo build --release -p fff-nvim 2>&1 || true
     fi
   '';

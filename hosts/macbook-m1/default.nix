@@ -6,6 +6,9 @@
   ...
 }:
 
+let
+  username = secrets.username or "redironninja";
+in
 {
   imports = [
     ../common-darwin.nix
@@ -13,8 +16,10 @@
 
   networking.hostName = secrets.hostname or "macbook";
 
-  users.users.redironninja = {
-    home = "/Users/redironninja";
+  system.primaryUser = username;
+
+  users.users.${username} = {
+    home = "/Users/${username}";
     shell = pkgs.nushell;
   };
 

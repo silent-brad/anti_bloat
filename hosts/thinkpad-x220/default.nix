@@ -6,6 +6,9 @@
   ...
 }:
 
+let
+  username = secrets.username or "redironninja";
+in
 {
   imports = [
     ./hardware.nix
@@ -43,7 +46,7 @@
   services.displayManager.gdm.enable = true;
   services.displayManager.gdm.wayland = true;
 
-  users.users.redironninja = {
+  users.users.${username} = {
     isNormalUser = true;
     extraGroups = [
       "wheel"

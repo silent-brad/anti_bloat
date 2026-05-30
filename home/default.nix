@@ -28,9 +28,9 @@
       ./desktop/cursor.nix
     ];
 
-  home.username = "redironninja";
+  home.username = secrets.username or "redironninja";
   home.homeDirectory =
-    if isDarwin then "/Users/redironninja" else "/home/redironninja";
+    if isDarwin then "/Users/${secrets.username or "redironninja"}" else "/home/${secrets.username or "redironninja"}";
 
   home.stateVersion = "25.05";
 
@@ -54,7 +54,6 @@
       kjv
       so
       ddgr
-      dex
 
       # Radicle
       radicle-node
@@ -62,6 +61,8 @@
       radicle-explorer
     ]
     ++ lib.optionals isLinux [
+      dex
+
       # Desktop apps (Linux / Wayland)
       brave
       inputs.thorium.packages.x86_64-linux.thorium-avx

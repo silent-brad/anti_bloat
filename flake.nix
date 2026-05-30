@@ -39,9 +39,15 @@
       ...
     }@inputs:
     let
-      # secrets.nix is gitignored, so we must read it via absolute path (requires --impure)
-      secretsPath = /home/redironninja/anti_bloat/secrets/secrets.nix;
-      secrets = if builtins.pathExists secretsPath then import secretsPath else { };
+      # secrets.nix is gitignored, so we must read it via absolute path (requires --impure).
+      # Try common locations across machines/platforms.
+      secretsCandidates = [
+        /home/redironninja/anti_bloat/secrets/secrets.nix
+        /Users/bradwhite/anti_bloat/secrets/secrets.nix
+      ];
+      foundSecrets = builtins.filter builtins.pathExists secretsCandidates;
+      secrets =
+        if foundSecrets == [ ] then { } else import (builtins.head foundSecrets);
       theme = import ./themes;
     in
     {
@@ -57,7 +63,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "bak";
-              home-manager.users.redironninja = import ./home;
+              home-manager.users.${secrets.username or "redironninja"} = import ./home;
               home-manager.extraSpecialArgs = {
                 inherit inputs secrets theme;
                 isLinux = true;
@@ -80,7 +86,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "bak";
-              home-manager.users.redironninja = import ./home;
+              home-manager.users.${secrets.username or "redironninja"} = import ./home;
               home-manager.extraSpecialArgs = {
                 inherit inputs secrets theme;
                 isLinux = false;

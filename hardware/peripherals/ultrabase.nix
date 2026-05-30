@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, secrets ? { }, ... }:
 
 {
   boot.kernelModules = [ "e1000e" ];
@@ -8,7 +8,7 @@
     ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="17ef", MODE="0666"
   '';
 
-  home-manager.users.redironninja = {
+  home-manager.users.${secrets.username or "redironninja"} = {
     services.kanshi = {
       enable = true;
       systemdTarget = "graphical-session.target";

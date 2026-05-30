@@ -1,10 +1,9 @@
 { config, pkgs, ... }:
 
 {
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  # Determinate Nix manages the Nix installation itself; disable nix-darwin's
+  # management to avoid conflicts. Configure Nix settings via Determinate.
+  nix.enable = false;
 
   nixpkgs.config.allowUnfree = true;
 
