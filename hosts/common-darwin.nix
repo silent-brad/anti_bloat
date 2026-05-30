@@ -6,27 +6,12 @@
     "flakes"
   ];
 
-  time.timeZone = "America/New_York";
-
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  networking.wireless.iwd.enable = true;
-  networking.networkmanager = {
-    enable = true;
-    wifi.backend = "iwd";
-  };
-
   nixpkgs.config.allowUnfree = true;
-
-  security.rtkit.enable = true;
 
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-    pinentryPackage = pkgs.pinentry-tty;
   };
-
-  services.openssh.enable = true;
 
   environment.systemPackages = with pkgs; [
     nushell
@@ -38,7 +23,6 @@
     lazygit
     btop
     fastfetch
-    acpi
     sqlite
     dict
 
@@ -56,10 +40,8 @@
     unzip
 
     openssl
-    inotify-tools
     rsync
     pandoc
-    impala
 
     nix-prefetch-github
     prefetch-npm-deps

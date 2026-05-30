@@ -1,0 +1,67 @@
+#+TITLE: Screenshots & GIF Recording
+#+AUTHOR: [[https://github.com/silent-brad][Brad White]]
+#+DATE: 2026-04-20
+#+STARTUP: overview
+
+* Overview
+
+Tools for capturing screenshots and recording GIFs on Wayland. The following
+packages are already included in the configuration (=home/default.nix=):
+
+- =grim= — screenshot capture
+- =slurp= — interactive region selection
+- =wf-recorder= — screen recording
+
+* Screenshots
+
+** Full Screen
+
+#+begin_src bash
+grim screenshot.png
+#+end_src
+
+** Select a Region
+
+#+begin_src bash
+grim -g "$(slurp)" screenshot.png
+#+end_src
+
+* GIF Recording
+
+** Start Recording
+
+Select a region with =slurp= and record in the background:
+
+#+begin_src bash
+wf-recorder -g "$(slurp)" -f recording.mp4 &
+#+end_src
+
+** Stop Recording
+
+From any terminal:
+
+#+begin_src bash
+pkill -INT wf-recorder
+#+end_src
+
+** Convert to GIF
+
+#+begin_src bash
+ffmpeg -i recording.mp4 -vf "fps=15,scale=640:-1:flags=lanczos" -loop 0 output.gif
+#+end_src
+
+Adjust =fps= and =scale= to control file size — lower values produce smaller GIFs.
+
+** Trim Before Converting
+
+Use =-ss= (start time) and =-to= (end time) to trim:
+
+#+begin_src bash
+ffmpeg -ss 00:00:02 -to 00:00:08 -i recording.mp4 -vf "fps=15,scale=640:-1:flags=lanczos" -loop 0 output.gif
+#+end_src
+
+Use =-t= instead of =-to= to specify a duration:
+
+#+begin_src bash
+ffmpeg -ss 2 -t 5 -i recording.mp4 -vf "fps=15,scale=640:-1:flags=lanczos" -loop 0 output.gif
+#+end_src

@@ -10,7 +10,7 @@
   imports = [
     ./hardware.nix
     ../common.nix
-    ../../modules/desktop/pinnacle.nix
+    ../../modules/desktop/hyprland.nix
     ../../modules/desktop/wayland.nix
     ../../hardware/audio.nix
     ../../hardware/printing.nix

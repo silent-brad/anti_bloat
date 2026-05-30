@@ -1,0 +1,211 @@
+#+TITLE: macOS (nix-darwin) Setup
+#+AUTHOR: [[https://github.com/silent-brad][Brad White]]
+#+DATE: 2026-05-30
+#+STARTUP: overview
+
+* Overview
+
+This flake supports both NixOS (Thinkpad X220) and macOS (MacBook M1) via
+[[https://github.com/LnL7/nix-darwin][nix-darwin]]. Shell, editor, and CLI tool configs are shared; Hyprland
+and Wayland-specific modules are only loaded on Linux.
+
+* Installing Nix on macOS
+
+** 1. Install Nix
+
+Use the Determinate Systems installer (recommended for macOS):
+
+#+begin_src bash
+curl --proto '=https' --tlsv1.2 -sSf -L \
+  https://install.determinate.systems/nix | sh -s -- install
+#+end_src
+
+This installs Nix with flakes enabled by default. Follow the on-screen
+prompts and restart your terminal when done.
+
+Alternatively, use the official installer:
+
+#+begin_src bash
+sh <(curl -L https://nixos.org/nix/install)
+#+end_src
+
+If using the official installer, enable flakes by adding to
+=~/.config/nix/nix.conf=:
+
+#+begin_src conf
+experimental-features = nix-command flakes
+#+end_src
+
+** 2. Verify Nix
+
+#+begin_src bash
+nix --version
+#+end_src
+
+* Installing nix-darwin
+
+** 1. Clone the Repository
+
+#+begin_src bash
+git clone https://github.com/silent-brad/anti_bloat ~/anti_bloat
+cd ~/anti_bloat
+#+end_src
+
+** 2. Create Secrets
+
+#+begin_src bash
+cp secrets/secrets.nix.example secrets/secrets.nix
+# Edit with your real values (hostname, git username, git email)
+#+end_src
+
+** 3. Bootstrap nix-darwin
+
+On a fresh Mac with no prior nix-darwin install, bootstrap with:
+
+#+begin_src bash
+nix run nix-darwin -- switch --flake .#macbook-m1 --impure
+#+end_src
+
+This installs nix-darwin and applies the configuration in one step.
+The =--impure= flag is required because =secrets/secrets.nix= is read
+via absolute path.
+
+** 4. Subsequent Rebuilds
+
+After the initial bootstrap, use:
+
+#+begin_src bash
+darwin-rebuild switch --flake .#macbook-m1 --impure
+#+end_src
+
+* What's Shared vs. Platform-Specific
+
+The =home/default.nix= module receives =isLinux= and =isDarwin= flags
+from the flake and uses them to conditionally load modules and packages.
+
+| Component | Linux (Thinkpad) | macOS (MacBook) |
+|-----------+------------------+-----------------|
+| Nushell + Starship | ✓ | ✓ |
+| Neovim | ✓ | ✓ |
+| btop | ✓ | ✓ |
+| Pi coding agent | ✓ | ✓ |
+| Git config | ✓ | ✓ |
+| Dev tools (amp, aws, terraform…) | ✓ | ✓ |
+| CLI tools (typst, khal, kjv…) | ✓ | ✓ |
+| Radicle | ✓ | ✓ |
+| Ghostty (with GL wrapper) | ✓ | — |
+| Hyprland + Wayland desktop | ✓ | — |
+| eww / rofi / swww | ✓ | — |
+| GTK theming | ✓ | — |
+| GUI apps (Brave, Krita…) | ✓ | — |
+| Screenshot tools (grim, slurp…) | ✓ | — |
+| Touch ID sudo | — | ✓ |
+
+* Architecture
+
+** Flake Structure
+
+- =nixosConfigurations.thinkpad-x220= — NixOS + home-manager (=x86_64-linux=)
+- =darwinConfigurations.macbook-m1= — nix-darwin + home-manager (=aarch64-darwin=)
+
+** Host Configs
+
+| File | Purpose |
+|------+---------|
+| =hosts/common.nix= | Shared NixOS system packages & settings |
+| =hosts/common-darwin.nix= | Shared darwin system packages & settings |
+| =hosts/thinkpad-x220/= | Thinkpad-specific (boot, hardware, Hyprland) |
+| =hosts/macbook-m1/= | MacBook-specific (Touch ID, fonts) |
+
+** Conditional Logic
+
+In =home/default.nix=, platform guards use =lib.optionals= and =lib.mkIf=:
+
+#+begin_src nix
+imports =
+  [ ./shell/nushell ./editors/neovim /* ... shared ... */ ]
+  ++ lib.optionals isLinux [
+    ./desktop/hyprland
+    ./terminal/ghostty.nix
+    /* ... linux-only ... */
+  ];
+
+home.homeDirectory =
+  if isDarwin then "/Users/redironninja" else "/home/redironninja";
+#+end_src
+
+* Adding macOS-Specific Packages
+
+To install GUI apps on macOS, add them to =hosts/macbook-m1/default.nix=
+or create a =home/desktop/darwin.nix= module:
+
+#+begin_src nix
+# In hosts/macbook-m1/default.nix:
+environment.systemPackages = with pkgs; [
+  # your macOS-specific CLI tools
+];
+
+# Or for Homebrew casks (GUI apps not in nixpkgs):
+homebrew = {
+  enable = true;
+  casks = [
+    "brave-browser"
+    "obsidian"
+  ];
+};
+#+end_src
+
+* Installing Ghostty on macOS
+
+Ghostty runs natively on macOS without the GL wrapper needed on the
+X220. If you want it on the Mac, install it outside Nix (download from
+[[https://ghostty.org]]) or add to homebrew casks, since the nixpkgs
+Ghostty package targets Linux.
+
+* Common Commands
+
+| Command | Purpose |
+|---------+---------|
+| =darwin-rebuild switch --flake .#macbook-m1 --impure= | Apply changes |
+| =darwin-rebuild build --flake .#macbook-m1 --impure= | Build only |
+| =nix flake update= | Update all flake inputs |
+| =darwin-rebuild --list-generations= | List generations |
+| =darwin-rebuild --rollback= | Rollback to previous generation |
+
+* Troubleshooting
+
+** "error: file 'nixpkgs' was not found"
+
+Make sure you are in the =~/anti_bloat= directory when running
+=darwin-rebuild=, or pass the full flake path:
+
+#+begin_src bash
+darwin-rebuild switch --flake ~/anti_bloat#macbook-m1 --impure
+#+end_src
+
+** Nix store permissions on macOS
+
+If you see permissions errors, ensure the Nix daemon is running:
+
+#+begin_src bash
+sudo launchctl kickstart -k system/org.nixos.nix-daemon
+#+end_src
+
+** Conflict with existing /etc files
+
+nix-darwin manages certain files in =/etc/=. If you see conflicts
+(e.g., =/etc/nix/nix.conf=), back up and remove the existing file:
+
+#+begin_src bash
+sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.bak
+#+end_src
+
+Then re-run =darwin-rebuild switch=.
+
+* See Also
+
+- [[file:INSTALLATION.org][NixOS Installation Guide]]
+- [[file:HARDWARE.org][Adding Hardware]]
+- [[file:CUSTOMIZATION.org][Customization]]
+- [[https://github.com/LnL7/nix-darwin][nix-darwin repo]]
+- [[https://daiderd.com/nix-darwin/manual][nix-darwin options reference]]

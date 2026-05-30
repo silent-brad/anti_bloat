@@ -5,81 +5,85 @@
   inputs,
   secrets ? { },
   theme,
+  isLinux ? true,
+  isDarwin ? false,
   ...
 }:
 
 {
-  imports = [
-    ./shell/nushell
-    ./shell/starship.nix
-    ./terminal/ghostty.nix
-    ./terminal/btop.nix
-    ./editors/neovim
-    ./desktop/pinnacle
-    ./desktop/swww
-    ./desktop/rofi
-    ./desktop/eww
-    ./desktop/cursor.nix
-  ];
+  imports =
+    [
+      ./shell/nushell
+      ./shell/starship.nix
+      ./terminal/btop.nix
+      ./editors/neovim
+      ./editors/pi.nix
+    ]
+    ++ lib.optionals isLinux [
+      ./terminal/ghostty.nix
+      ./desktop/hyprland
+      ./desktop/swww
+      ./desktop/rofi
+      ./desktop/eww
+      ./desktop/cursor.nix
+    ];
 
   home.username = "redironninja";
-  home.homeDirectory = "/home/redironninja";
+  home.homeDirectory =
+    if isDarwin then "/Users/redironninja" else "/home/redironninja";
 
   home.stateVersion = "25.05";
 
   programs.home-manager.enable = true;
 
-  home.packages = with pkgs; [
-    # Desktop apps
-    brave
-    inputs.thorium.packages.x86_64-linux.thorium-avx
-    krita
-    obsidian
-    protonmail-desktop
-    bibletime
-    zathura
-    libreoffice
-    calibre
-    thunar
-    feh
+  home.packages = with pkgs;
+    [
+      # Development
+      amp-cli
+      awscli2
+      terraform
+      awsebcli
+      codecrafters-cli
+      cloudflared
 
-    # Screenshot & Recording
-    grim
-    slurp
-    satty
-    wf-recorder
+      # CLI tools
+      typst
+      khal
+      meli
+      typer
+      kjv
+      so
+      ddgr
+      dex
 
-    # Media
-    yewtube
-    mpv
-    libwebp
+      # Radicle
+      radicle-node
+      radicle-httpd
+      radicle-explorer
+    ]
+    ++ lib.optionals isLinux [
+      # Desktop apps (Linux / Wayland)
+      brave
+      inputs.thorium.packages.x86_64-linux.thorium-avx
+      krita
+      obsidian
+      protonmail-desktop
+      bibletime
+      zathura
+      libreoffice
+      calibre
+      thunar
+      feh
 
-    # Development
-    amp-cli
-    awscli2
-    terraform
-    awsebcli
-    codecrafters-cli
-    cloudflared
-
-    # CLI tools
-    typst
-    khal
-    meli
-    typer
-    kjv
-    so
-    ddgr
-    dex
-
-    # Radicle
-    radicle-node
-    radicle-httpd
-    radicle-explorer
-  ];
+      # Screenshot & Recording (Wayland)
+      grim
+      slurp
+      satty
+      wf-recorder
+    ];
 
   # Hide GTK3/4 CSD title bars (headerbar) for tiling WM
-  gtk = {
+  gtk = lib.mkIf isLinux {
     enable = true;
     gtk3.extraCss = ''
       headerbar, .titlebar { min-height: 0; padding: 0; margin: 0; background: ${theme.background}; }
@@ -93,9 +97,10 @@
 
   # XDG directories
   xdg.enable = true;
-  xdg.userDirs = {
+  xdg.userDirs = lib.mkIf isLinux {
     enable = true;
     createDirectories = true;
+    setSessionVariables = false;
   };
 
   # Git configuration (update values in secrets/secrets.nix)

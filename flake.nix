@@ -4,33 +4,41 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    pinnacle = {
-      url = "github:pinnacle-comp/pinnacle";
-      inputs.nixpkgs.follows = "nixpkgs";
+    home-manager-darwin = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
 
     thorium = {
-      url = "github:Rishabh5321/thorium_flake";
+      url = "github:Rishabh5321/custom-packages-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
   };
 
   outputs =
     {
       self,
       nixpkgs,
+      nixpkgs-darwin,
+      nix-darwin,
       home-manager,
+      home-manager-darwin,
       ...
     }@inputs:
     let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-
       # secrets.nix is gitignored, so we must read it via absolute path (requires --impure)
       secretsPath = /home/redironninja/anti_bloat/secrets/secrets.nix;
       secrets = if builtins.pathExists secretsPath then import secretsPath else { };
@@ -39,7 +47,7 @@
     {
       nixosConfigurations = {
         thinkpad-x220 = nixpkgs.lib.nixosSystem {
-          inherit system;
+          system = "x86_64-linux";
           specialArgs = { inherit inputs secrets; };
           modules = [
             ./hosts/thinkpad-x220
@@ -50,7 +58,34 @@
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "bak";
               home-manager.users.redironninja = import ./home;
-              home-manager.extraSpecialArgs = { inherit inputs secrets theme; };
+              home-manager.extraSpecialArgs = {
+                inherit inputs secrets theme;
+                isLinux = true;
+                isDarwin = false;
+              };
+            }
+          ];
+        };
+      };
+
+      darwinConfigurations = {
+        macbook-m1 = nix-darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          specialArgs = { inherit inputs secrets; };
+          modules = [
+            ./hosts/macbook-m1
+
+            home-manager-darwin.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "bak";
+              home-manager.users.redironninja = import ./home;
+              home-manager.extraSpecialArgs = {
+                inherit inputs secrets theme;
+                isLinux = false;
+                isDarwin = true;
+              };
             }
           ];
         };

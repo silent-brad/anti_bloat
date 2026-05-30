@@ -46,6 +46,10 @@ sudo nixos-rebuild switch --flake .#thinkpad-x220
 
 ThinkPad X220 Tablet with Intel i5-2520M, Intel HD Graphics.
 
+** macbook-m1
+
+MacBook with Apple M1, managed via nix-darwin. See [[file:DARWIN.org][macOS Setup Guide]].
+
 Hardware modules included:
 - ThinkPad X220 profile (ACPI, touchpad)
 - Intel GPU
@@ -82,5 +86,6 @@ These are consumed by:
 * See Also
 
 - [[file:INSTALLATION.org][Installation Guide]]
+- [[file:DARWIN.org][macOS (nix-darwin) Setup]]
 - [[file:HARDWARE.org][Adding Hardware]]
 - [[file:CUSTOMIZATION.org][Customization]]

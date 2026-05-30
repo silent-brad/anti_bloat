@@ -68,6 +68,8 @@ in
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+    withRuby = false;
+    withPython3 = false;
   };
 
   home.packages = with pkgs; [
@@ -75,7 +77,7 @@ in
     gopls
     vtsls
     nodejs
-    nodePackages.prettier
+    prettier
     tailwindcss-language-server
     angular-language-server
     ocamlPackages.ocaml-lsp

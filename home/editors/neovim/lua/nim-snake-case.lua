@@ -130,6 +130,28 @@ local function format_nim(input)
       end
       table.insert(output, input:sub(start, i - 1))
 
+    -- Numeric literal (including 0x hex, 0o octal, 0b binary, and suffixes)
+    elseif input:sub(i, i):match("[0-9]") then
+      local start = i
+      if input:sub(i, i) == "0" and input:sub(i + 1, i + 1):match("[xXoObB]") then
+        i = i + 2
+        while i <= len and input:sub(i, i):match("[a-fA-F0-9_]") do
+          i = i + 1
+        end
+      else
+        while i <= len and input:sub(i, i):match("[0-9_eE.+%-]") do
+          i = i + 1
+        end
+      end
+      -- Nim type suffix like 'i32, 'u8, etc.
+      if i <= len and input:sub(i, i) == "'" and i + 1 <= len and input:sub(i + 1, i + 1):match("[a-zA-Z]") then
+        i = i + 1
+        while i <= len and input:sub(i, i):match("[a-zA-Z0-9]") do
+          i = i + 1
+        end
+      end
+      table.insert(output, input:sub(start, i - 1))
+
     -- Identifier
     elseif input:sub(i, i):match("[a-zA-Z_]") then
       local start = i

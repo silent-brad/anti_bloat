@@ -7,7 +7,7 @@
 }:
 
 {
-  home.packages = [ pkgs.swww ];
+  home.packages = [ pkgs.awww ];
 
   home.file.".local/bin/wallpaper-cycle.nu" = {
     source = pkgs.replaceVars ./wallpaper-cycle.nu {

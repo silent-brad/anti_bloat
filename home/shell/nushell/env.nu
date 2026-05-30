@@ -4,6 +4,7 @@
 $env.PATH = ($env.PATH | split row (char esep) | prepend [
   $"($env.HOME)/.local/bin"
   $"($env.HOME)/.cargo/bin"
+  $"($env.HOME)/.npm-global/bin"
 ])
 
 # Editor
