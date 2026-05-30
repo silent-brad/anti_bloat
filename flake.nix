@@ -21,6 +21,8 @@
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
 
+    hyprland.url = "github:hyprwm/Hyprland";
+
     thorium = {
       url = "github:Rishabh5321/custom-packages-flake";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -24,7 +24,7 @@
       ./desktop/hyprland
       ./desktop/swww
       ./desktop/rofi
-      ./desktop/eww
+      ./desktop/quickshell
       ./desktop/cursor.nix
     ];
 
